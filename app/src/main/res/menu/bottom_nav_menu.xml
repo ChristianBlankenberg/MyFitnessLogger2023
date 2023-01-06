@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_weight_and_kfa"
+        android:icon="@drawable/ic_body_weight_scales_icon"
+        android:title="@string/title_weight_and_kfa" />
+
+    <item
+        android:id="@+id/navigation_sleep_and_info"
+        android:icon="@drawable/ic_sleep_svgrepo_com"
+        android:title="@string/title_sleep_and_info" />
+
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_dashboard" />
+
+</menu>

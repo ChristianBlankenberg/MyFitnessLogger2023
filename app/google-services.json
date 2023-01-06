@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "558365609638",
+    "project_id": "fitnessdata-11106",
+    "storage_bucket": "fitnessdata-11106.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558365609638:android:03b07d791b82fc75d02e67",
+        "android_client_info": {
+          "package_name": "com.example.myfitnesslogger2023"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "558365609638-v802mal7tuedn81kqo6nm1egmogh8i5i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRyZCaYEDqt-70LwjFK04CJplUwspZAUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "558365609638-v802mal7tuedn81kqo6nm1egmogh8i5i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

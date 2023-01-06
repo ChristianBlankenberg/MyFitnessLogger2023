@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Fitness Logger 2023</string>
+    <string name="title_weight_and_kfa">Weight &amp; KFA</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_sleep_and_info">Sleep &amp; Info</string>
+    <string name="gewicht">Gewicht</string>
+    <string name="kfa">KFA</string>
+    <string name="sleepDuration">Schlafdauer</string>
+    <string name="info">Information</string>
+</resources>
