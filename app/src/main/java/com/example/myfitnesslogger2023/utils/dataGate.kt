@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Month
 import java.util.*
@@ -72,7 +73,7 @@ object dataGate {
         return getAValue(dateTime, informationType.sleepduration, fragementActivity).toDoubleOrNull()
     }
 
-    fun getInformation(dateTime: LocalDateTime, fragementActivity: FragmentActivity?): String? {
+    fun getInformation(dateTime: LocalDateTime, fragementActivity: FragmentActivity?): String {
         return getAValue(dateTime, informationType.information, fragementActivity)
     }
 
@@ -81,10 +82,10 @@ object dataGate {
         val dataStoreDescription = dataStoreDescription(dataStoreType.device, informationType, null, dateTime, fragementActivity)
         var result = getValue(dataStoreDescription)
 
-        if (result == null || result == "")
+        if (result == "")
         {
-            val dataStoreDescription = dataStoreDescription(dataStoreType.googleSheets, informationType, null, dateTime, fragementActivity)
-            result = getValue(dataStoreDescription)
+            val dsc = dataStoreDescription(dataStoreType.googleSheets, informationType, null, dateTime, fragementActivity)
+            result = getValue(dsc)
         }
 
         return result
@@ -123,7 +124,7 @@ object dataGate {
 
             dataStoreType.device ->
             {
-                sharedPrefGate.getValue(dataStoreDescription.getActivity(), dataStoreDescription.getKey())
+                getValue(dataStoreDescription.getActivity(), dataStoreDescription.getKey())
             }
 
             else -> {
@@ -149,7 +150,7 @@ object dataGate {
                         )
                     ) != "OK")
                     {
-
+                        //ToDo : add error handerl
                     }
                 }
             }
@@ -198,6 +199,32 @@ object dataGate {
         var result = "Ex=" + order + "&Sh=" + sheetName + "&Col=" + col + "&Row=" + row
         if (order == setValueParameter())
             result = result.plus("&Val=" + value)
+
+        result = result.plus("&Id=").plus(getID())
+
+        return result
+    }
+
+    fun getID() : String
+    {
+        val pattern = "dd/MM/yyyy"
+        val simpleDateFormat = SimpleDateFormat(pattern)
+        val date = simpleDateFormat.format(Date())
+
+        var result = ""
+        var lastNumber = 5
+        for (i in date.length - 1 downTo 0)
+        {
+            var number = (date.substring(i,i+1)).toIntOrNull()
+
+            if (number == null)
+            {
+                number = 0
+            }
+
+            result = result + (number + lastNumber)
+            lastNumber = number
+        }
 
         return result
     }
