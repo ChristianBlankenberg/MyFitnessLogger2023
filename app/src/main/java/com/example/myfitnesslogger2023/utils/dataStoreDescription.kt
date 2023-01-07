@@ -9,7 +9,7 @@ import java.util.*
 class dataStoreDescription(
     val dataStoreType: dataStoreType,
     val informationType: informationType,
-    val value: Double?,
+    val value: Any?,
     val dateTime: LocalDateTime,
     val fragmentActivity: FragmentActivity? = null) {
 
@@ -27,6 +27,8 @@ class dataStoreDescription(
         return when (informationType) {
             com.example.myfitnesslogger2023.utils.informationType.weight -> 2
             com.example.myfitnesslogger2023.utils.informationType.kfa -> 3
+            com.example.myfitnesslogger2023.utils.informationType.sleepduration -> 4
+            com.example.myfitnesslogger2023.utils.informationType.information -> 5
             else -> -1
         }
     }
@@ -39,33 +41,46 @@ class dataStoreDescription(
     {
         return when(informationType)
         {
-            com.example.myfitnesslogger2023.utils.informationType.weight -> googleSheetType.dataSheet
-            com.example.myfitnesslogger2023.utils.informationType.kfa -> googleSheetType.dataSheet
+            com.example.myfitnesslogger2023.utils.informationType.weight,
+            com.example.myfitnesslogger2023.utils.informationType.kfa,
+            com.example.myfitnesslogger2023.utils.informationType.sleepduration,
+            com.example.myfitnesslogger2023.utils.informationType.information -> googleSheetType.dataSheet
             else -> googleSheetType.unknown
         }
     }
 
     fun getValueString(): String {
         return when (dataStoreType) {
-            com.example.myfitnesslogger2023.utils.dataStoreType.googleSheets -> getDoubleValueString(
-                this.value
-            )
+            com.example.myfitnesslogger2023.utils.dataStoreType.googleSheets -> {
+                return if (informationType == com.example.myfitnesslogger2023.utils.informationType.information)
+                {
+                    this.value?.toString() ?: "?"
+                }
+                else {
+                    getDoubleValueString(
+                        this.value
+                    )
+                }
+            }
             else -> this.value.toString()
         }
     }
 
-    private fun getDoubleValueString(number: Double?): String {
+    private fun getDoubleValueString(number: Any?): String {
         return number.toString().replace(".", ",")
     }
 
     fun getData(): HashMap<String, Any> {
         return when(informationType)
         {
-            com.example.myfitnesslogger2023.utils.informationType.weight ->
+            com.example.myfitnesslogger2023.utils.informationType.weight,
+            com.example.myfitnesslogger2023.utils.informationType.kfa,
+            com.example.myfitnesslogger2023.utils.informationType.sleepduration,
+            com.example.myfitnesslogger2023.utils.informationType.information ->
                 hashMapOf<String, Any>(
                     "date" to this.dateTime,
                     "type" to this.informationType,
-                    "value" to (this.value ?: "no value"),
+                    "value" to (this.value?.toString() ?: "no value"),
                     "timestamp" to FieldValue.serverTimestamp(),
                     "database" to  this.getDatabase()
                 )

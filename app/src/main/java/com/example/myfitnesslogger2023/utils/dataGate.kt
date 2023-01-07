@@ -39,30 +39,59 @@ object dataGate {
         }
     }
 
+    fun sendSleepDuration(minutes : Int, dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null)
+    {
+        val dataStoreDescriptions = getDataStoreDescriptions(informationType.sleepduration, minutes.toDouble(), dateTime, fragementActivity)
+        for(dataStoreDescription in dataStoreDescriptions)
+        {
+            sendValue(dataStoreDescription)
+        }
+    }
+
+    fun sendInformation(
+        information: String,
+        dateTime: LocalDateTime,
+        fragementActivity: FragmentActivity?
+    ) {
+        val dataStoreDescriptions = getDataStoreDescriptions(informationType.information, information, dateTime, fragementActivity)
+        for(dataStoreDescription in dataStoreDescriptions)
+        {
+            sendValue(dataStoreDescription)
+        }
+    }
+
     fun getKFA(dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null) : Double? {
-        return getAValue(dateTime, informationType.kfa, fragementActivity)
+        return getAValue(dateTime, informationType.kfa, fragementActivity).toDoubleOrNull()
     }
 
     fun getWeight(dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null) : Double? {
-        return getAValue(dateTime, informationType.weight, fragementActivity)
+        return getAValue(dateTime, informationType.weight, fragementActivity).toDoubleOrNull()
     }
 
-    private fun getAValue(dateTime: LocalDateTime, informationType: informationType, fragementActivity: FragmentActivity? = null) : Double?
+    fun getSleepDurationMinutes(dateTime: LocalDateTime, fragementActivity: FragmentActivity?): Double? {
+        return getAValue(dateTime, informationType.sleepduration, fragementActivity).toDoubleOrNull()
+    }
+
+    fun getInformation(dateTime: LocalDateTime, fragementActivity: FragmentActivity?): String? {
+        return getAValue(dateTime, informationType.information, fragementActivity)
+    }
+
+    private fun getAValue(dateTime: LocalDateTime, informationType: informationType, fragementActivity: FragmentActivity? = null) : String
     {
         val dataStoreDescription = dataStoreDescription(dataStoreType.device, informationType, null, dateTime, fragementActivity)
-        var result = getValue(dataStoreDescription).toDoubleOrNull()
+        var result = getValue(dataStoreDescription)
 
-        if (result == null)
+        if (result == null || result == "")
         {
             val dataStoreDescription = dataStoreDescription(dataStoreType.googleSheets, informationType, null, dateTime, fragementActivity)
-            result = getValue(dataStoreDescription).toDoubleOrNull()
+            result = getValue(dataStoreDescription)
         }
 
         return result
     }
 
 
-    private fun getDataStoreDescriptions(informationType: informationType, value : Double?, dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null) : ArrayList<dataStoreDescription>
+    private fun getDataStoreDescriptions(informationType: informationType, value : Any?, dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null) : ArrayList<dataStoreDescription>
     {
         return arrayListOf<dataStoreDescription>(
             dataStoreDescription(dataStoreType.googleSheets, informationType, value, dateTime),

@@ -11,12 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myfitnesslogger.services.keyboardService
 import com.example.myfitnesslogger2023.R
 import com.example.myfitnesslogger2023.databinding.FragmentWeightAndKfaBinding
-import com.example.myfitnesslogger2023.ui.baseClasses.BaseFragment
+import com.example.myfitnesslogger2023.ui.baseClasses.SendInfoBaseFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.Math.abs
 
-class WeightKFAFragment : BaseFragment() {
+class WeightKFAFragment : SendInfoBaseFragment() {
 
     private lateinit var weightAndKFAViewModel: WeightKFAViewModel
     private var _binding: FragmentWeightAndKfaBinding? = null
@@ -34,14 +34,13 @@ class WeightKFAFragment : BaseFragment() {
             ViewModelProvider(this).get(WeightKFAViewModel::class.java)
         weightAndKFAViewModel.initialize(this.requireActivity());
 
-        this.initialize(weightAndKFAViewModel)
-
         _binding = FragmentWeightAndKfaBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        this.initialize(weightAndKFAViewModel, binding.SendButton, binding.circularProgress)
+
         // initialize fragment controls
         initializeNumberPickers()
-        initializeSendButton()
 
         return root
     }
@@ -49,13 +48,6 @@ class WeightKFAFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        this.reInitializeLabels()
-        this.binding.SendButton.isEnabled = this.weightAndKFAViewModel.canSendData()
     }
 
     private fun getYesterdaysTodaysWeightInformation() : String {
@@ -101,16 +93,44 @@ class WeightKFAFragment : BaseFragment() {
         return result
     }
 
-    private fun reInitializeLabels() {
+    override fun reInitializeLabels() {
         GlobalScope.launch {
             val yesterdaysTodaysWeightInformation = this@WeightKFAFragment.getYesterdaysTodaysWeightInformation()
             val yesterdaysTodaysKFAInformation = this@WeightKFAFragment.getYesterdaysTodaysKFAInformation()
 
-            activity?.runOnUiThread {
-                this@WeightKFAFragment.initializeALabel(this@WeightKFAFragment.binding.weightLabel, R.string.gewicht, yesterdaysTodaysWeightInformation)
-                this@WeightKFAFragment.initializeALabel(this@WeightKFAFragment.binding.kfaLabel, R.string.kfa, yesterdaysTodaysKFAInformation)
+
+            if (_binding != null) {
+                activity?.runOnUiThread {
+                    this@WeightKFAFragment.initializeALabel(
+                        this@WeightKFAFragment.binding.weightLabel,
+                        R.string.gewicht,
+                        yesterdaysTodaysWeightInformation
+                    )
+                    this@WeightKFAFragment.initializeALabel(
+                        this@WeightKFAFragment.binding.kfaLabel,
+                        R.string.kfa,
+                        yesterdaysTodaysKFAInformation
+                    )
+                }
             }
         }
+    }
+
+    override fun sendPreAction() {
+        binding.weightGreat.clearFocus()
+        binding.weightSmall.clearFocus()
+        binding.KFAGreat.clearFocus()
+        binding.KFASmall.clearFocus()
+    }
+
+    override fun sendAction() {
+        weightAndKFAViewModel.sendData(
+            binding.weightGreat.value,
+            binding.weightSmall.value,
+            binding.KFAGreat.value,
+            binding.KFASmall.value,
+            binding.KFASmall.isVisible,
+            activity)
     }
 
     private fun initializeNumberPickers()
@@ -144,36 +164,7 @@ class WeightKFAFragment : BaseFragment() {
 
         binding.KFASmall.minValue = 0
         binding.KFASmall.maxValue = 9
-        binding.KFASmall.value = 5    }
-
-    private fun initializeSendButton()
-    {
-        binding.SendButton.setOnClickListener {
-            keyboardService.hideKeyboard()
-            binding.weightGreat.clearFocus()
-            binding.weightSmall.clearFocus()
-            binding.KFAGreat.clearFocus()
-            binding.KFASmall.clearFocus()
-
-            GlobalScope.launch {
-                activity?.runOnUiThread {
-                    binding.circularProgress.visibility = VISIBLE
-                }
-
-                weightAndKFAViewModel.sendData(
-                    binding.weightGreat.value,
-                    binding.weightSmall.value,
-                    binding.KFAGreat.value,
-                    binding.KFASmall.value,
-                    binding.KFASmall.isVisible,
-                    activity)
-
-                activity?.runOnUiThread {
-                    binding.circularProgress.visibility = INVISIBLE
-                    this@WeightKFAFragment.reInitializeLabels()
-                }
-            }
-        }
+        binding.KFASmall.value = 5
     }
 }
 

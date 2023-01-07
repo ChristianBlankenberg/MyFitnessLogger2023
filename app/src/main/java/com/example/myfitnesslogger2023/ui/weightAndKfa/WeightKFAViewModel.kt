@@ -4,13 +4,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.myfitnesslogger.businesslogic.dataGate
-import com.example.myfitnesslogger2023.ui.baseClasses.BaseViewModel
+import com.example.myfitnesslogger2023.ui.baseClasses.SendInfoBaseViewModel
 import com.example.myfitnesslogger2023.utils.firebaseFireStoreService
-import com.example.myfitnesslogger2023.utils.globalVariables
-import com.google.firebase.firestore.FieldValue
 import java.time.LocalDateTime
 
-class WeightKFAViewModel : BaseViewModel() {
+class WeightKFAViewModel : SendInfoBaseViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"

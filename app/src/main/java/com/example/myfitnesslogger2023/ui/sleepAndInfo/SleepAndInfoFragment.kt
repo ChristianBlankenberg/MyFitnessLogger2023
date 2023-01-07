@@ -4,15 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.myfitnesslogger2023.R
 import com.example.myfitnesslogger2023.databinding.FragmentSleepAndInfoBinding
-import com.example.myfitnesslogger2023.ui.baseClasses.BaseFragment
+import com.example.myfitnesslogger2023.ui.baseClasses.SendInfoBaseFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class SleepAndInfoFragment : BaseFragment() {
+class SleepAndInfoFragment : SendInfoBaseFragment() {
 
     private lateinit var sleepAndInfoViewModel: SleepAndInfoViewModel
     private var _binding: FragmentSleepAndInfoBinding? = null
@@ -31,37 +30,59 @@ class SleepAndInfoFragment : BaseFragment() {
         _binding = FragmentSleepAndInfoBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        this.initialize(sleepAndInfoViewModel, binding.SendButton, binding.circularProgress)
+
+        this.initializeNumberPickers()
         return root
-    }
-
-    private fun reInitializeLabels() {
-        GlobalScope.launch {
-            val todaysSleepDurationHours = this@SleepAndInfoFragment.getTodaysSleepDurationHours()
-            val todaysSleepDurationMinutes = this@SleepAndInfoFragment.getTodaysSleepDurationMinutes()
-
-            activity?.runOnUiThread {
-                this@SleepAndInfoFragment.initializeALabel(this@SleepAndInfoFragment.binding.sleepDurationLabel, R.string.sleepDuration, todaysSleepDurationHours + ":" + todaysSleepDurationMinutes )
-            }
-        }
-    }
-
-    private fun getTodaysSleepDurationMinutes(): String {
-        return "?"
-    }
-
-    private fun getTodaysSleepDurationHours(): String {
-        return "?"
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        this.reInitializeLabels()
-        this.binding.SendButton.isEnabled = this.sleepAndInfoViewModel.canSendData()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun initializeNumberPickers() {
+        binding.sleepDurationHours.maxValue = 23
+        binding.sleepDurationHours.minValue = 0
+        binding.sleepDurationHours.value = 8
+
+        binding.sleepDurationMinutes.maxValue = 59
+        binding.sleepDurationMinutes.minValue = 0
+        binding.sleepDurationMinutes.value = 0
+    }
+
+    override fun reInitializeLabels() {
+        GlobalScope.launch {
+            val todaysSleepDurationHours = sleepAndInfoViewModel.getTodaysSleepDurationHours(activity)
+            val todaysSleepDurationMinutes = sleepAndInfoViewModel.getTodaysSleepDurationMinutes(activity)
+            val information = sleepAndInfoViewModel.getInformation(activity)
+
+            if (_binding != null) {
+                activity?.runOnUiThread {
+                    this@SleepAndInfoFragment.initializeALabel(
+                        this@SleepAndInfoFragment.binding.sleepDurationLabel,
+                        R.string.sleepDuration,
+                        todaysSleepDurationHours + ":" + todaysSleepDurationMinutes
+                    )
+                    this@SleepAndInfoFragment.initializeALabel(
+                        this@SleepAndInfoFragment.binding.infoLabel,
+                        R.string.info,
+                        information
+                    )
+                }
+            }
+        }
+    }
+
+    override fun sendPreAction() {
+        binding.sleepDurationHours.clearFocus()
+        binding.sleepDurationMinutes.clearFocus()
+        binding.infoTextInput.clearFocus()
+    }
+
+    override fun sendAction() {
+        sleepAndInfoViewModel.sendSleepDuration(binding.sleepDurationHours.value, binding.sleepDurationMinutes.value, activity)
+        sleepAndInfoViewModel.sendInformation(binding.infoTextInput.text.toString(), activity)
+    }
+
 }

@@ -4,5 +4,7 @@ enum class informationType {
     unknown,
     none,
     weight,
-    kfa
+    kfa,
+    sleepduration,
+    information
 }

@@ -4,7 +4,7 @@ import android.app.Activity
 import androidx.lifecycle.ViewModel
 import com.example.myfitnesslogger2023.utils.globalVariables
 
-open class BaseViewModel : ViewModel() {
+open class SendInfoBaseViewModel : ViewModel() {
     protected lateinit var activity : Activity
 
     fun initialize(activity : Activity)
