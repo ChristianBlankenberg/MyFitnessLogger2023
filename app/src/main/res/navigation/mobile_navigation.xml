@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_sleep_and_info" />
 
     <fragment
+        android:id="@+id/navigation_activity"
+        android:name="com.example.myfitnesslogger2023.ui.activity.ActivityFragment"
+        android:label="@string/title_activity"
+        tools:layout="@layout/fragment_activity" />
+
+    <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.myfitnesslogger2023.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"

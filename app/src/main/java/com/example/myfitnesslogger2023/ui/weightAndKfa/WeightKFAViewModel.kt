@@ -15,7 +15,7 @@ class WeightKFAViewModel : SendInfoBaseViewModel() {
     }
     val text: LiveData<String> = _text
 
-
+/*
     fun sheetsTest(onSuccessCallback: (result : Any) -> Unit) {
 
         /*
@@ -69,7 +69,7 @@ class WeightKFAViewModel : SendInfoBaseViewModel() {
     fun onDataReceived(data: HashMap<String, Any>) {
 
     }
-
+*/
     fun sendData(
         weightGreat : Int,
         weightSmall : Int,

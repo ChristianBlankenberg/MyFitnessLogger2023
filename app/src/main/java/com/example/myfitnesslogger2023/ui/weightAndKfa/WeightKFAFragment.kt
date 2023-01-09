@@ -12,6 +12,7 @@ import com.example.myfitnesslogger.services.keyboardService
 import com.example.myfitnesslogger2023.R
 import com.example.myfitnesslogger2023.databinding.FragmentWeightAndKfaBinding
 import com.example.myfitnesslogger2023.ui.baseClasses.SendInfoBaseFragment
+import com.example.myfitnesslogger2023.utils.mathFunctions
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.Math.abs
@@ -20,6 +21,7 @@ class WeightKFAFragment : SendInfoBaseFragment() {
 
     private lateinit var weightAndKFAViewModel: WeightKFAViewModel
     private var _binding: FragmentWeightAndKfaBinding? = null
+    private val mathFunctions = mathFunctions()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -50,54 +52,26 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         _binding = null
     }
 
-    private fun getYesterdaysTodaysWeightInformation() : String {
-        val todaysWeight = this.weightAndKFAViewModel.getPastWeight(0, activity)
+    private fun getYesterdaysTodaysWeightInformation(todaysWeight : Double?) : String {
         val yesterdaysWeight = this.weightAndKFAViewModel.getPastWeight(-1, activity)
 
         return getYesterdaysTodaysValueInformation(todaysWeight, yesterdaysWeight)
     }
 
-    private fun getYesterdaysTodaysKFAInformation() : String
+    private fun getYesterdaysTodaysKFAInformation(todaysKFA : Double?) : String
     {
-        val todaysKFA = this.weightAndKFAViewModel.getPastKFA(0, activity)
         val yesterdaysKFA = this.weightAndKFAViewModel.getPastKFA(-1, activity)
 
         return getYesterdaysTodaysValueInformation(todaysKFA, yesterdaysKFA)
     }
 
-    private fun getYesterdaysTodaysValueInformation(todaysValue : Double?, yesterdaysValue : Double?) : String {
-        val result =
-            if (todaysValue != null)
-            {
-                if (yesterdaysValue != null)
-                {
-                    val sign = if (yesterdaysValue < todaysValue) "+" else "-"
-                    todaysValue.toShortString().plus(" / ").plus(sign).plus(" ").plus(abs(yesterdaysValue-todaysValue).toShortString())
-                }
-                else
-                {
-                    todaysValue.toShortString().plus(" / ?")
-                }
-            }
-            else
-            {
-                if (yesterdaysValue != null)
-                {
-                    "? / ".plus(yesterdaysValue.toShortString())
-                }
-                else {
-                    "?"
-                }
-            }
-
-        return result
-    }
-
     override fun reInitializeLabels() {
         GlobalScope.launch {
-            val yesterdaysTodaysWeightInformation = this@WeightKFAFragment.getYesterdaysTodaysWeightInformation()
-            val yesterdaysTodaysKFAInformation = this@WeightKFAFragment.getYesterdaysTodaysKFAInformation()
+            val todaysWeight = this@WeightKFAFragment.weightAndKFAViewModel.getPastWeight(0, activity)
+            val todaysKFA = this@WeightKFAFragment.weightAndKFAViewModel.getPastKFA(0, activity)
 
+            val yesterdaysTodaysWeightInformation = this@WeightKFAFragment.getYesterdaysTodaysWeightInformation(todaysWeight)
+            val yesterdaysTodaysKFAInformation = this@WeightKFAFragment.getYesterdaysTodaysKFAInformation(todaysKFA)
 
             if (_binding != null) {
                 activity?.runOnUiThread {
@@ -111,6 +85,15 @@ class WeightKFAFragment : SendInfoBaseFragment() {
                         R.string.kfa,
                         yesterdaysTodaysKFAInformation
                     )
+
+                    val todaysWeightPreAndPastComma = mathFunctions.getPreAndPastCommaValue(todaysWeight ?: 0.0)
+                    val todaysKFAComma = mathFunctions.getPreAndPastCommaValue(todaysKFA ?: 0.0)
+
+                    this@WeightKFAFragment.binding.weightGreat.value = todaysWeightPreAndPastComma.first
+                    this@WeightKFAFragment.binding.weightSmall.value = todaysWeightPreAndPastComma.second
+
+                    this@WeightKFAFragment.binding.KFAGreat.value = todaysKFAComma.first
+                    this@WeightKFAFragment.binding.KFASmall.value = todaysKFAComma.second
                 }
             }
         }
@@ -165,6 +148,35 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         binding.KFASmall.minValue = 0
         binding.KFASmall.maxValue = 9
         binding.KFASmall.value = 5
+    }
+
+
+    private fun getYesterdaysTodaysValueInformation(todaysValue : Double?, yesterdaysValue : Double?) : String {
+        val result =
+            if (todaysValue != null)
+            {
+                if (yesterdaysValue != null)
+                {
+                    val sign = if (yesterdaysValue < todaysValue) "+" else "-"
+                    todaysValue.toShortString().plus(" / ").plus(sign).plus(" ").plus(abs(yesterdaysValue-todaysValue).toShortString())
+                }
+                else
+                {
+                    todaysValue.toShortString().plus(" / ?")
+                }
+            }
+            else
+            {
+                if (yesterdaysValue != null)
+                {
+                    "? / ".plus(yesterdaysValue.toShortString())
+                }
+                else {
+                    "?"
+                }
+            }
+
+        return result
     }
 }
 

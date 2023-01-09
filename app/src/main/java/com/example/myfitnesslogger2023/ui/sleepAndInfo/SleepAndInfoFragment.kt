@@ -69,6 +69,9 @@ class SleepAndInfoFragment : SendInfoBaseFragment() {
                         R.string.info,
                         information
                     )
+
+                    this@SleepAndInfoFragment.binding.sleepDurationHours.value = todaysSleepDurationHours.toIntOrNull() ?: 8
+                    this@SleepAndInfoFragment.binding.sleepDurationMinutes.value = todaysSleepDurationMinutes.toIntOrNull() ?: 0
                 }
             }
         }

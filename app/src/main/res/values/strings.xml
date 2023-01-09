@@ -7,4 +7,5 @@
     <string name="kfa">KFA</string>
     <string name="sleepDuration">Schlafdauer</string>
     <string name="info">Information</string>
+    <string name="title_activity">Activity</string>
 </resources>
