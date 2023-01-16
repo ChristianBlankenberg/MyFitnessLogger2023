@@ -36,7 +36,7 @@ class SleepAndInfoViewModel : SendInfoBaseViewModel() {
         if (sleepDurationMinutes != null)
         {
             val hours = (sleepDurationMinutes.toInt().div(60))
-            return (sleepDurationMinutes.toInt() - hours * 60).toString()
+            return "%02d".format (sleepDurationMinutes.toInt() - hours * 60)
         }
         else
         {

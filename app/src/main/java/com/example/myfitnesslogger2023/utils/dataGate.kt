@@ -150,7 +150,7 @@ object dataGate {
                         )
                     ) != "OK")
                     {
-                        //ToDo : add error handerl
+                        //ToDo : add error handler
                     }
                 }
             }
