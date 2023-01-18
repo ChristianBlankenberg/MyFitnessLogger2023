@@ -3,9 +3,17 @@
     <string name="title_weight_and_kfa">Weight &amp; KFA</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_sleep_and_info">Sleep &amp; Info</string>
-    <string name="gewicht">Gewicht</string>
+    <string name="weight">Weight</string>
     <string name="kfa">KFA</string>
-    <string name="sleepDuration">Schlafdauer</string>
+    <string name="sleepDuration">Sleep Duration</string>
     <string name="info">Information</string>
     <string name="title_activity">Activity</string>
+
+    <string name="jogging">Jogging</string>
+    <string name="cycling">Cycling</string>
+    <string name="hiking">Hiking</string>
+    <string name="other">Other</string>
+
+    <string name="duration">Duration</string>
+    <string name="calories">Calories</string>
 </resources>

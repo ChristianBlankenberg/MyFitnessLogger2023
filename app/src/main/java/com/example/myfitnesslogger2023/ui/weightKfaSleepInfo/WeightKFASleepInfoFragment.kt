@@ -1,16 +1,13 @@
-package com.example.myfitnesslogger2023.ui.weightAndKfa
+package com.example.myfitnesslogger2023.ui.weightKfaSleepInfo
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.example.myfitnesslogger.services.keyboardService
 import com.example.myfitnesslogger2023.R
-import com.example.myfitnesslogger2023.databinding.FragmentWeightAndKfaBinding
+import com.example.myfitnesslogger2023.databinding.FragmentWeightKfaSleepdurationInfoBinding
 import com.example.myfitnesslogger2023.ui.baseClasses.SendInfoBaseFragment
 import com.example.myfitnesslogger2023.utils.mathFunctions
 import kotlinx.coroutines.GlobalScope
@@ -19,8 +16,8 @@ import java.lang.Math.abs
 
 class WeightKFAFragment : SendInfoBaseFragment() {
 
-    private lateinit var weightAndKFAViewModel: WeightKFAViewModel
-    private var _binding: FragmentWeightAndKfaBinding? = null
+    private lateinit var weightAndKFAViewModel: WeightKFASleepInfoViewModel
+    private var _binding: FragmentWeightKfaSleepdurationInfoBinding? = null
     private val mathFunctions = mathFunctions()
 
     // This property is only valid between onCreateView and
@@ -33,10 +30,10 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         weightAndKFAViewModel =
-            ViewModelProvider(this).get(WeightKFAViewModel::class.java)
+            ViewModelProvider(this).get(WeightKFASleepInfoViewModel::class.java)
         weightAndKFAViewModel.initialize(this.requireActivity());
 
-        _binding = FragmentWeightAndKfaBinding.inflate(inflater, container, false)
+        _binding = FragmentWeightKfaSleepdurationInfoBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         this.initialize(weightAndKFAViewModel, binding.SendButton, binding.circularProgress)
@@ -67,23 +64,38 @@ class WeightKFAFragment : SendInfoBaseFragment() {
 
     override fun reInitializeLabels() {
         GlobalScope.launch {
-            val todaysWeight = this@WeightKFAFragment.weightAndKFAViewModel.getPastWeight(0, activity)
-            val todaysKFA = this@WeightKFAFragment.weightAndKFAViewModel.getPastKFA(0, activity)
+            val todaysWeight = weightAndKFAViewModel.getPastWeight(0, activity)
+            val todaysKFA = weightAndKFAViewModel.getPastKFA(0, activity)
 
             val yesterdaysTodaysWeightInformation = this@WeightKFAFragment.getYesterdaysTodaysWeightInformation(todaysWeight)
             val yesterdaysTodaysKFAInformation = this@WeightKFAFragment.getYesterdaysTodaysKFAInformation(todaysKFA)
+
+            val todaysSleepDurationHours = weightAndKFAViewModel.getTodaysSleepDurationHours(activity)
+            val todaysSleepDurationMinutes = weightAndKFAViewModel.getTodaysSleepDurationMinutes(activity)
+            val information = weightAndKFAViewModel.getInformation(activity)
 
             if (_binding != null) {
                 activity?.runOnUiThread {
                     this@WeightKFAFragment.initializeALabel(
                         this@WeightKFAFragment.binding.weightLabel,
-                        R.string.gewicht,
+                        R.string.weight,
                         yesterdaysTodaysWeightInformation
                     )
                     this@WeightKFAFragment.initializeALabel(
                         this@WeightKFAFragment.binding.kfaLabel,
                         R.string.kfa,
                         yesterdaysTodaysKFAInformation
+                    )
+
+                    this@WeightKFAFragment.initializeALabel(
+                        this@WeightKFAFragment.binding.sleepDurationLabel,
+                        R.string.sleepDuration,
+                        todaysSleepDurationHours + ":" + todaysSleepDurationMinutes
+                    )
+                    this@WeightKFAFragment.initializeALabel(
+                        this@WeightKFAFragment.binding.infoLabel,
+                        R.string.info,
+                        information
                     )
 
                     val todaysWeightPreAndPastComma = mathFunctions.getPreAndPastCommaValue(todaysWeight ?: 0.0)
@@ -94,6 +106,9 @@ class WeightKFAFragment : SendInfoBaseFragment() {
 
                     this@WeightKFAFragment.binding.KFAGreat.value = todaysKFAComma.first
                     this@WeightKFAFragment.binding.KFASmall.value = todaysKFAComma.second
+
+                    this@WeightKFAFragment.binding.sleepDurationHours.value = todaysSleepDurationHours.toIntOrNull() ?: 8
+                    this@WeightKFAFragment.binding.sleepDurationMinutes.value = todaysSleepDurationMinutes.toIntOrNull() ?: 0
                 }
             }
         }
@@ -104,6 +119,9 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         binding.weightSmall.clearFocus()
         binding.KFAGreat.clearFocus()
         binding.KFASmall.clearFocus()
+        binding.sleepDurationHours.clearFocus()
+        binding.sleepDurationMinutes.clearFocus()
+        binding.infoTextInput.clearFocus()
     }
 
     override fun sendAction() {
@@ -114,6 +132,10 @@ class WeightKFAFragment : SendInfoBaseFragment() {
             binding.KFASmall.value,
             binding.KFASmall.isVisible,
             activity)
+
+        weightAndKFAViewModel.sendSleepDuration(binding.sleepDurationHours.value, binding.sleepDurationMinutes.value, activity)
+        weightAndKFAViewModel.sendInformation(binding.infoTextInput.text.toString(), activity)
+
     }
 
     private fun initializeNumberPickers()
@@ -148,6 +170,8 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         binding.KFASmall.minValue = 0
         binding.KFASmall.maxValue = 9
         binding.KFASmall.value = 5
+
+        initializeDurationNumberPickers(binding.sleepDurationHours, binding.sleepDurationMinutes)
     }
 
 

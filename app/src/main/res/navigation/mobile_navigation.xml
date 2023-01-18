@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_weight_and_kfa"
-        android:name="com.example.myfitnesslogger2023.ui.weightAndKfa.WeightKFAFragment"
+        android:name="com.example.myfitnesslogger2023.ui.weightKfaSleepInfo.WeightKFAFragment"
         android:label="@string/title_weight_and_kfa"
-        tools:layout="@layout/fragment_weight_and_kfa" />
+        tools:layout="@layout/fragment_weight_kfa_sleepduration_info" />
 
     <fragment
         android:id="@+id/navigation_sleep_and_info"

@@ -42,50 +42,17 @@ class SleepAndInfoFragment : SendInfoBaseFragment() {
     }
 
     private fun initializeNumberPickers() {
-        binding.sleepDurationHours.maxValue = 23
-        binding.sleepDurationHours.minValue = 0
-        binding.sleepDurationHours.value = 8
 
-        binding.sleepDurationMinutes.maxValue = 59
-        binding.sleepDurationMinutes.minValue = 0
-        binding.sleepDurationMinutes.value = 0
     }
 
     override fun reInitializeLabels() {
-        GlobalScope.launch {
-            val todaysSleepDurationHours = sleepAndInfoViewModel.getTodaysSleepDurationHours(activity)
-            val todaysSleepDurationMinutes = sleepAndInfoViewModel.getTodaysSleepDurationMinutes(activity)
-            val information = sleepAndInfoViewModel.getInformation(activity)
-
-            if (_binding != null) {
-                activity?.runOnUiThread {
-                    this@SleepAndInfoFragment.initializeALabel(
-                        this@SleepAndInfoFragment.binding.sleepDurationLabel,
-                        R.string.sleepDuration,
-                        todaysSleepDurationHours + ":" + todaysSleepDurationMinutes
-                    )
-                    this@SleepAndInfoFragment.initializeALabel(
-                        this@SleepAndInfoFragment.binding.infoLabel,
-                        R.string.info,
-                        information
-                    )
-
-                    this@SleepAndInfoFragment.binding.sleepDurationHours.value = todaysSleepDurationHours.toIntOrNull() ?: 8
-                    this@SleepAndInfoFragment.binding.sleepDurationMinutes.value = todaysSleepDurationMinutes.toIntOrNull() ?: 0
-                }
-            }
-        }
-    }
+   }
 
     override fun sendPreAction() {
-        binding.sleepDurationHours.clearFocus()
-        binding.sleepDurationMinutes.clearFocus()
-        binding.infoTextInput.clearFocus()
     }
 
+
     override fun sendAction() {
-        sleepAndInfoViewModel.sendSleepDuration(binding.sleepDurationHours.value, binding.sleepDurationMinutes.value, activity)
-        sleepAndInfoViewModel.sendInformation(binding.infoTextInput.text.toString(), activity)
-    }
+   }
 
 }

@@ -4,5 +4,5 @@ import androidx.lifecycle.ViewModel
 import com.example.myfitnesslogger2023.ui.baseClasses.SendInfoBaseViewModel
 
 class ActivityViewModel : SendInfoBaseViewModel() {
-    // TODO: Implement the ViewModel
+
 }

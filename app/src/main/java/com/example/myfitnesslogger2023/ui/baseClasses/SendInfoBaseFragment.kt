@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.view.View
 import android.widget.Button
+import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -16,7 +17,6 @@ abstract class SendInfoBaseFragment() : Fragment() {
     private lateinit var viewModel : SendInfoBaseViewModel
     private lateinit var sendButton : Button
     private lateinit var circularProgressIndicator : CircularProgressIndicator
-
 
     fun initialize(
         viewModel : SendInfoBaseViewModel,
@@ -34,7 +34,8 @@ abstract class SendInfoBaseFragment() : Fragment() {
         this.initializeSendButton()
     }
 
-    fun showYesNoDialog(question : String, positiveFun : () -> Unit) : Boolean{
+    fun showYesNoDialog(question : String, positiveFun : () -> Unit) : Boolean
+    {
         var result : Int = DialogInterface.BUTTON_NEUTRAL
         val dialogClickListener = DialogInterface.OnClickListener{_,which ->
             if (which == DialogInterface.BUTTON_POSITIVE) {
@@ -49,7 +50,8 @@ abstract class SendInfoBaseFragment() : Fragment() {
         return true //== DialogInterface.BUTTON_POSITIVE
     }
 
-    protected fun initializeALabel(aLabel: TextView, labelID: Int, todaysValue: String) {
+    protected fun initializeALabel(aLabel: TextView, labelID: Int, todaysValue: String)
+    {
         if (aLabel != null) {
             if (todaysValue == "") {
                 aLabel.setText(labelID)
@@ -63,6 +65,17 @@ abstract class SendInfoBaseFragment() : Fragment() {
 
     protected fun Double.toShortString(): String {
         return (Math.round(this * 100) / 100.0).toString()
+    }
+
+    protected fun initializeDurationNumberPickers(hourNP : NumberPicker, minuteNP : NumberPicker)
+    {
+        hourNP.maxValue = 23
+        hourNP.minValue = 0
+        hourNP.value = 8
+
+        minuteNP.maxValue = 59
+        minuteNP.minValue = 0
+        minuteNP.value = 0
     }
 
     override fun onResume() {
