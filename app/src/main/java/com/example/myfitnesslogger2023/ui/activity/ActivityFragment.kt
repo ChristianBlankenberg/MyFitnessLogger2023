@@ -47,7 +47,14 @@ class ActivityFragment : SendInfoBaseFragment() {
         _binding = FragmentActivityBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        this.initialize(activityViewModel, binding.SendButton, binding.circularProgress)
+        this.initialize(activityViewModel,  binding.SendButton, binding.circularProgress)
+
+        val myFragmentPagerAdapter = MyFragmentPagerAdapter(context, childFragmentManager, 2)
+        myFragmentPagerAdapter.addFragment(JoggingFragment(), context?.resources?.getText(R.string.jogging).toString())
+        myFragmentPagerAdapter.addFragment(CyclingFragment(), context?.resources?.getText(R.string.cycling).toString())
+
+        binding.activityTypeTabs.setupWithViewPager(binding.activitiesView)
+        binding.activitiesView.adapter = myFragmentPagerAdapter
 
         this.initializeCheckBoxes()
         this.checkPanelVisibilties()
@@ -58,7 +65,7 @@ class ActivityFragment : SendInfoBaseFragment() {
     }
 
     private fun initializeCheckBoxes() {
-        binding.joggingCB.setOnClickListener {
+/*        binding.joggingCB.setOnClickListener {
             this.onCBChecked(it as MaterialCheckBox)
         }
         binding.cyclingCB.setOnClickListener {
@@ -69,11 +76,11 @@ class ActivityFragment : SendInfoBaseFragment() {
         }
         binding.otherCB.setOnClickListener {
             this.onCBChecked(it as MaterialCheckBox)
-        }
+        }*/
     }
 
     private fun onCBChecked(cb: MaterialCheckBox?) {
-        if (cb != binding.joggingCB) {
+/*        if (cb != binding.joggingCB) {
             binding.joggingCB.isChecked = false;
         }
         if (cb != binding.cyclingCB) {
@@ -84,22 +91,22 @@ class ActivityFragment : SendInfoBaseFragment() {
         }
         if (cb != binding.otherCB) {
             binding.otherCB.isChecked = false;
-        }
+        }*/
 
         checkPanelVisibilties()
     }
 
     private fun checkPanelVisibilties()
     {
-        binding.joggingPanel.isVisible = binding.joggingCB.isChecked
+/*        binding.joggingPanel.isVisible = binding.joggingCB.isChecked
         binding.cyclingCBPanel.isVisible = binding.cyclingCB.isChecked
         binding.hikingCBPanel.isVisible = binding.hikingCB.isChecked
-        binding.otherCBPanel.isVisible = binding.otherCB.isChecked
+        binding.otherCBPanel.isVisible = binding.otherCB.isChecked*/
     }
 
     private fun initializeCaloriesNumberPickers()
     {
-        binding.joggingCalories.minValue = 1
+       /* binding.joggingCalories.minValue = 1
         binding.joggingCalories.maxValue = 3000
         binding.joggingCalories.value = 100
 
@@ -113,14 +120,16 @@ class ActivityFragment : SendInfoBaseFragment() {
 
         binding.otherCalories.minValue = 1
         binding.otherCalories.maxValue = 3000
-        binding.otherCalories.value = 100
+        binding.otherCalories.value = 100*/
     }
 
     private fun initializeDurationNumberPickers()
     {
+/*
         initializeDurationNumberPickers(binding.joggingDurationHours, binding.joggingDurationMinutes)
         initializeDurationNumberPickers(binding.cyclingDurationHours, binding.cyclingDurationMinutes)
         initializeDurationNumberPickers(binding.hikingDurationHours, binding.hikingDurationMinutes)
         initializeDurationNumberPickers(binding.otherDurationHours, binding.otherDurationMinutes)
+*/
     }
 }
