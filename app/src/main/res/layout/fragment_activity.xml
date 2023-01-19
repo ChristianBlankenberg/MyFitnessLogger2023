@@ -323,8 +323,6 @@
             app:layout_constraintBottom_toTopOf="@+id/SendButton"
             app:layout_constraintTop_toBottomOf="@+id/activityTypeTabs" />
 
-
-
         <Button
             android:id="@+id/SendButton"
             android:layout_width="match_parent"

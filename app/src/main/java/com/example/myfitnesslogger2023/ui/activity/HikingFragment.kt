@@ -7,18 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.myfitnesslogger2023.R
+import com.example.myfitnesslogger2023.databinding.FragmentCyclingBinding
+import com.example.myfitnesslogger2023.databinding.FragmentHikingBinding
 import com.example.myfitnesslogger2023.databinding.FragmentJoggingBinding
 
-class JoggingFragment(val parentContext : Context?) : TabulatorChildFragment(parentContext) {
+class HikingFragment(val parentContext : Context?) : TabulatorChildFragment(parentContext) {
 
-    private var _binding: FragmentJoggingBinding? = null
+    private var _binding: FragmentHikingBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
     override fun GetTitle(): String {
-        return parentContext?.resources?.getText(R.string.jogging).toString()
+        return parentContext?.resources?.getText(R.string.hiking).toString()
     }
 
     override fun sendPreAction() {
@@ -35,9 +37,10 @@ class JoggingFragment(val parentContext : Context?) : TabulatorChildFragment(par
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentJoggingBinding.inflate(inflater, container, false)
+        _binding = FragmentHikingBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         return root
     }
+
 }

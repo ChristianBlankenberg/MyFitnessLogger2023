@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 abstract class SendInfoBaseFragment() : Fragment() {
     private lateinit var viewModel : SendInfoBaseViewModel
-    private lateinit var sendButton : Button
+    private var sendButton : Button? = null
     private lateinit var circularProgressIndicator : CircularProgressIndicator
 
     fun initialize(
@@ -82,12 +82,13 @@ abstract class SendInfoBaseFragment() : Fragment() {
         super.onResume()
 
         this.reInitializeLabels()
-        this.sendButton.isEnabled = this.viewModel.canSendData()
+        this.sendButton?.isEnabled = this.viewModel.canSendData()
     }
 
     private fun initializeSendButton()
     {
-        this.sendButton.setOnClickListener {
+        this.sendButton?.setOnClickListener {
+            this.sendButton?.isEnabled = false
 
             keyboardService.hideKeyboard()
             sendPreAction()
@@ -102,6 +103,7 @@ abstract class SendInfoBaseFragment() : Fragment() {
                 activity?.runOnUiThread {
                     this@SendInfoBaseFragment.circularProgressIndicator.visibility = View.INVISIBLE
                     this@SendInfoBaseFragment.reInitializeLabels()
+                    this@SendInfoBaseFragment.sendButton?.isEnabled = true
                 }
             }
         }

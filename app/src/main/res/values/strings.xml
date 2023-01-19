@@ -13,6 +13,7 @@
     <string name="cycling">Cycling</string>
     <string name="hiking">Hiking</string>
     <string name="other">Other</string>
+    <string name="workout">Workout</string>
 
     <string name="duration">Duration</string>
     <string name="calories">Calories</string>

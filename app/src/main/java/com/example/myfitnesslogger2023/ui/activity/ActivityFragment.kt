@@ -2,17 +2,12 @@ package com.example.myfitnesslogger2023.ui.activity
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import androidx.core.view.isVisible
 import com.example.myfitnesslogger2023.R
 import com.example.myfitnesslogger2023.databinding.FragmentActivityBinding
-import com.example.myfitnesslogger2023.databinding.FragmentSleepAndInfoBinding
 import com.example.myfitnesslogger2023.ui.baseClasses.SendInfoBaseFragment
-import com.example.myfitnesslogger2023.ui.sleepAndInfo.SleepAndInfoViewModel
 import com.google.android.material.checkbox.MaterialCheckBox
 
 class ActivityFragment : SendInfoBaseFragment() {
@@ -30,6 +25,7 @@ class ActivityFragment : SendInfoBaseFragment() {
 
     private lateinit var viewModel: ActivityViewModel
     override fun sendPreAction() {
+        val selectedTabPosition = binding.activityTypeTabs.selectedTabPosition
     }
 
     override fun sendAction() {
@@ -49,19 +45,25 @@ class ActivityFragment : SendInfoBaseFragment() {
 
         this.initialize(activityViewModel,  binding.SendButton, binding.circularProgress)
 
-        val myFragmentPagerAdapter = MyFragmentPagerAdapter(context, childFragmentManager, 2)
-        myFragmentPagerAdapter.addFragment(JoggingFragment(), context?.resources?.getText(R.string.jogging).toString())
-        myFragmentPagerAdapter.addFragment(CyclingFragment(), context?.resources?.getText(R.string.cycling).toString())
-
-        binding.activityTypeTabs.setupWithViewPager(binding.activitiesView)
-        binding.activitiesView.adapter = myFragmentPagerAdapter
-
+        this.initializeTabulatorViewControls()
         this.initializeCheckBoxes()
         this.checkPanelVisibilties()
         this.initializeCaloriesNumberPickers()
         this.initializeDurationNumberPickers()
 
         return root
+    }
+
+    private fun initializeTabulatorViewControls()
+    {
+        val myFragmentPagerAdapter = TabulatorFragmentPageAdapter(requireContext(), childFragmentManager)
+        myFragmentPagerAdapter.addFragment(JoggingFragment(requireContext()))
+        myFragmentPagerAdapter.addFragment(CyclingFragment(requireContext()))
+        myFragmentPagerAdapter.addFragment(HikingFragment(requireContext()))
+        myFragmentPagerAdapter.addFragment(WorkoutFragment(requireContext()))
+
+        binding.activityTypeTabs.setupWithViewPager(binding.activitiesView)
+        binding.activitiesView.adapter = myFragmentPagerAdapter
     }
 
     private fun initializeCheckBoxes() {

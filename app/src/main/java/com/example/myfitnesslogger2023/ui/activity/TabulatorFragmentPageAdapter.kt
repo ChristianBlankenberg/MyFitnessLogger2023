@@ -5,15 +5,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
-class MyFragmentPagerAdapter(private val myContext: Context?, fm: FragmentManager, internal var totalTabs: Int) : FragmentPagerAdapter(fm){
+class TabulatorFragmentPageAdapter(private val myContext: Context?, fm: FragmentManager) : FragmentPagerAdapter(fm){
 
-    private val fragments = ArrayList<Fragment>()
-    private val titles = ArrayList<String>()
+    private val fragments = ArrayList<TabulatorChildFragment>()
 
-    fun addFragment(fragment : Fragment, title : String)
+    fun addFragment(fragment : TabulatorChildFragment)
     {
         fragments.add(fragment);
-        titles.add(title)
     }
 
     override fun getCount(): Int {
@@ -25,6 +23,6 @@ class MyFragmentPagerAdapter(private val myContext: Context?, fm: FragmentManage
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return titles.get(position)
+        return fragments.get(position).Title.toString()
     }
 }
