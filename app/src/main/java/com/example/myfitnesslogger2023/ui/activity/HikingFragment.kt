@@ -40,6 +40,18 @@ class HikingFragment(val parentContext : Context?) : TabulatorChildFragment(pare
         _binding = FragmentHikingBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        initializeDistanceActivityControls(
+            distanceKmNP = binding.distanceKm,
+            distancemNP = binding.distancem,
+            durationHrNP = binding.durationHr,
+            durationmNP = binding.durationMin,
+            distancekmMax = 100,
+            durationHrMax = 24,
+            25,
+            5
+        )
+
+
         return root
     }
 

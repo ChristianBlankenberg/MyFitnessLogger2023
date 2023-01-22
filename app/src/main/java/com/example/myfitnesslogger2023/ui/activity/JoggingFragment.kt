@@ -38,6 +38,17 @@ class JoggingFragment(val parentContext : Context?) : TabulatorChildFragment(par
         _binding = FragmentJoggingBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        initializeDistanceActivityControls(
+            binding.distanceKm,
+            binding.distancem,
+            binding.durationHr,
+            binding.durationMin,
+            45,
+            6,
+            10,
+            1
+        )
+
         return root
     }
 }
