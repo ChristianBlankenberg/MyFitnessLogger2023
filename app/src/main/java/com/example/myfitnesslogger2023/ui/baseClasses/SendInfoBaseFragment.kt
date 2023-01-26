@@ -13,16 +13,15 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-abstract class SendInfoBaseFragment() : Fragment() {
+abstract class SendInfoBaseFragment : BaseFragment() {
     private lateinit var viewModel : SendInfoBaseViewModel
     private var sendButton : Button? = null
-    private lateinit var circularProgressIndicator : CircularProgressIndicator
+    private var circularProgressIndicator : CircularProgressIndicator? = null
 
     fun initialize(
         viewModel : SendInfoBaseViewModel,
-        sendButton : Button,
-        circularProgressIndicator : CircularProgressIndicator
-    )
+        sendButton : Button?,
+        circularProgressIndicator : CircularProgressIndicator?)
     {
         this.viewModel = viewModel
         this.viewModel.initialize(this.requireActivity())
@@ -50,7 +49,7 @@ abstract class SendInfoBaseFragment() : Fragment() {
         return true //== DialogInterface.BUTTON_POSITIVE
     }
 
-    protected fun initializeALabel(aLabel: TextView, labelID: Int, todaysValue: String)
+    protected fun initializeALabel(aLabel: TextView?, labelID: Int, todaysValue: String)
     {
         if (aLabel != null) {
             if (todaysValue == "") {
@@ -95,13 +94,13 @@ abstract class SendInfoBaseFragment() : Fragment() {
 
             GlobalScope.launch {
                 activity?.runOnUiThread {
-                    this@SendInfoBaseFragment.circularProgressIndicator.visibility = View.VISIBLE
+                    this@SendInfoBaseFragment.circularProgressIndicator?.visibility = View.VISIBLE
                 }
 
                 sendAction()
 
                 activity?.runOnUiThread {
-                    this@SendInfoBaseFragment.circularProgressIndicator.visibility = View.INVISIBLE
+                    this@SendInfoBaseFragment.circularProgressIndicator?.visibility = View.INVISIBLE
                     this@SendInfoBaseFragment.reInitializeLabels()
                     this@SendInfoBaseFragment.sendButton?.isEnabled = true
                 }

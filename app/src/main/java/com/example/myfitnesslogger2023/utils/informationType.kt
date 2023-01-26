@@ -6,5 +6,6 @@ enum class informationType {
     weight,
     kfa,
     sleepduration,
-    information
+    information,
+    activity
 }

@@ -9,6 +9,7 @@ abstract class ActivitySendInfoBaseFragment() : SendInfoBaseFragment() {
         distancemNP : NumberPicker,
         durationHrNP : NumberPicker,
         durationmNP : NumberPicker,
+        caloriesNP : NumberPicker,
         distancekmMax : Int,
         durationHrMax : Int,
         defaultValueDistance : Int,
@@ -25,10 +26,14 @@ abstract class ActivitySendInfoBaseFragment() : SendInfoBaseFragment() {
 
         durationHrNP.minValue = 0
         durationHrNP.maxValue = durationHrMax
-        durationHrNP.minValue = defaultValueDurationHr
+        durationHrNP.value = defaultValueDurationHr
 
         durationmNP.minValue = 0
         durationmNP.maxValue = 59
-        durationmNP.minValue = 0
+        durationmNP.value = 0
+
+        caloriesNP.minValue = 0
+        caloriesNP.maxValue = 2500
+        caloriesNP.value = 500
     }
 }

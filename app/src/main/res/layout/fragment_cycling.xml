@@ -86,6 +86,27 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <TextView
+            android:id="@+id/caloriesLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/calories"
+            android:textSize="24sp" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <NumberPicker
+                android:id="@+id/caloriesNP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
         <!-- Content end -->
 
         <Button

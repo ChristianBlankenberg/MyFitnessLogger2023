@@ -9,8 +9,9 @@ class TabulatorFragmentPageAdapter(private val myContext: Context?, fm: Fragment
 
     private val fragments = ArrayList<TabulatorChildFragment>()
 
-    fun addFragment(fragment : TabulatorChildFragment)
+    fun addFragment(fragment : TabulatorChildFragment, parentContext: Context?)
     {
+        fragment.setParentContext(parentContext)
         fragments.add(fragment);
     }
 

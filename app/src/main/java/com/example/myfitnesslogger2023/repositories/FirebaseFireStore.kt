@@ -1,15 +1,10 @@
-package com.example.myfitnesslogger2023.utils
+package com.example.myfitnesslogger2023.repositories
 import android.content.ContentValues.TAG
 import android.util.Log
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import java.lang.Exception
-import com.google.firebase.firestore.QueryDocumentSnapshot
 
-import com.google.firebase.firestore.QuerySnapshot
-
-class firebaseFireStoreService {
+object firebaseFireStoreService {
 
     val fireStoreDatabase = FirebaseFirestore.getInstance()
 

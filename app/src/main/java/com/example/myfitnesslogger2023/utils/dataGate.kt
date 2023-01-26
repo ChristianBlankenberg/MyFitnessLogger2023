@@ -1,50 +1,62 @@
 package com.example.myfitnesslogger.businesslogic
 
-import android.app.Activity
 import androidx.fragment.app.FragmentActivity
 import com.example.myfitnesslogger.businesslogic.sharedPrefGate.getValue
+import com.example.myfitnesslogger2023.enumerations.activityType
 import com.example.myfitnesslogger2023.utils.dataStoreDescription
 import com.example.myfitnesslogger2023.utils.dataStoreType
-import com.example.myfitnesslogger2023.utils.firebaseFireStoreService
+import com.example.myfitnesslogger2023.repositories.firebaseFireStoreService
 import com.example.myfitnesslogger2023.utils.informationType
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.net.URLDecoder
-import java.net.URLEncoder
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.Month
 import java.util.*
 import kotlin.collections.ArrayList
 
 object dataGate {
     val httpService: httpRequestService = httpRequestService()
-    val firestoreService : firebaseFireStoreService = firebaseFireStoreService()
 
-    fun sendWeight(weight : Double, dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null)
-    {
-        val dataStoreDescriptions = getDataStoreDescriptions(informationType.weight, weight, dateTime, fragementActivity)
-        for(dataStoreDescription in dataStoreDescriptions)
-        {
+    fun sendWeight(
+        weight: Double,
+        dateTime: LocalDateTime,
+        fragementActivity: FragmentActivity? = null
+    ) {
+        val dataStoreDescriptions = getDataStoreDescriptions(
+            informationType.weight,
+            arrayListOf(weight),
+            dateTime,
+            fragementActivity
+        )
+        for (dataStoreDescription in dataStoreDescriptions) {
             sendValue(dataStoreDescription)
         }
     }
 
-    fun sendKFA(kfa : Double, dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null)
-    {
-        val dataStoreDescriptions = getDataStoreDescriptions(informationType.kfa, kfa, dateTime, fragementActivity)
-        for(dataStoreDescription in dataStoreDescriptions)
-        {
+    fun sendKFA(kfa: Double, dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null) {
+        val dataStoreDescriptions = getDataStoreDescriptions(
+            informationType.kfa,
+            arrayListOf(kfa),
+            dateTime,
+            fragementActivity
+        )
+        for (dataStoreDescription in dataStoreDescriptions) {
             sendValue(dataStoreDescription)
         }
     }
 
-    fun sendSleepDuration(minutes : Int, dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null)
-    {
-        val dataStoreDescriptions = getDataStoreDescriptions(informationType.sleepduration, minutes.toDouble(), dateTime, fragementActivity)
-        for(dataStoreDescription in dataStoreDescriptions)
-        {
+    fun sendSleepDuration(
+        minutes: Int,
+        dateTime: LocalDateTime,
+        fragementActivity: FragmentActivity? = null
+    ) {
+        val dataStoreDescriptions = getDataStoreDescriptions(
+            informationType.sleepduration,
+            arrayListOf(minutes.toDouble()),
+            dateTime,
+            fragementActivity
+        )
+        for (dataStoreDescription in dataStoreDescriptions) {
             sendValue(dataStoreDescription)
         }
     }
@@ -54,115 +66,215 @@ object dataGate {
         dateTime: LocalDateTime,
         fragementActivity: FragmentActivity?
     ) {
-        val dataStoreDescriptions = getDataStoreDescriptions(informationType.information, information, dateTime, fragementActivity)
-        for(dataStoreDescription in dataStoreDescriptions)
-        {
+        val dataStoreDescriptions = getDataStoreDescriptions(
+            informationType.information,
+            arrayListOf(information),
+            dateTime,
+            fragementActivity
+        )
+        for (dataStoreDescription in dataStoreDescriptions) {
             sendValue(dataStoreDescription)
         }
     }
 
-    fun getKFA(dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null) : Double? {
-        return getAValue(dateTime, informationType.kfa, fragementActivity).toDoubleOrNull()
+    fun sendActivity(activity: activityType,
+                     distance: Double,
+                     minutes: Int,
+                     calories: Int,
+                     dateTime: LocalDateTime,
+                     fragementActivity: FragmentActivity?) {
+        val dataStoreDescriptions = getDataStoreDescriptions(
+            informationType.activity,
+            arrayListOf(
+                activity,
+                minutes,
+                calories,
+                distance),
+            dateTime,
+            fragementActivity
+        )
+
+        for (dataStoreDescription in dataStoreDescriptions) {
+            sendValue(dataStoreDescription)
+        }
     }
 
-    fun getWeight(dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null) : Double? {
-        return getAValue(dateTime, informationType.weight, fragementActivity).toDoubleOrNull()
+    fun getKFA(dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null): Double? {
+        return getAValue(dateTime, informationType.kfa, fragementActivity).firstOrNull()?.toDoubleOrNull()
     }
 
-    fun getSleepDurationMinutes(dateTime: LocalDateTime, fragementActivity: FragmentActivity?): Double? {
-        return getAValue(dateTime, informationType.sleepduration, fragementActivity).toDoubleOrNull()
+    fun getWeight(dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null): Double? {
+        return getAValue(dateTime, informationType.weight, fragementActivity).firstOrNull()?.toDoubleOrNull()
+    }
+
+    fun getSleepDurationMinutes(
+        dateTime: LocalDateTime,
+        fragementActivity: FragmentActivity?
+    ): Double? {
+        return getAValue(
+            dateTime,
+            informationType.sleepduration,
+            fragementActivity
+        ).firstOrNull()?.toDoubleOrNull()
     }
 
     fun getInformation(dateTime: LocalDateTime, fragementActivity: FragmentActivity?): String {
-        return getAValue(dateTime, informationType.information, fragementActivity)
+        return getAValue(dateTime, informationType.information, fragementActivity).firstOrNull() ?: ""
     }
 
-    private fun getAValue(dateTime: LocalDateTime, informationType: informationType, fragementActivity: FragmentActivity? = null) : String
-    {
-        val dataStoreDescription = dataStoreDescription(dataStoreType.device, informationType, null, dateTime, fragementActivity)
+    private fun getAValue(
+        dateTime: LocalDateTime,
+        informationType: informationType,
+        fragementActivity: FragmentActivity? = null
+    ): ArrayList<String> {
+        val dataStoreDescription = dataStoreDescription(
+            dataStoreType.device,
+            informationType,
+            arrayListOf(),
+            dateTime,
+            fragementActivity
+        )
+
         var result = getValue(dataStoreDescription)
 
-        if (result == "")
-        {
-            val dsc = dataStoreDescription(dataStoreType.googleSheets, informationType, null, dateTime, fragementActivity)
+        if (result.count() == 0) {
+            val dsc = dataStoreDescription(
+                dataStoreType.googleSheets,
+                informationType,
+                arrayListOf(),
+                dateTime,
+                fragementActivity
+            )
             result = getValue(dsc)
         }
 
         return result
     }
 
-
-    private fun getDataStoreDescriptions(informationType: informationType, value : Any?, dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null) : ArrayList<dataStoreDescription>
-    {
+    private fun getDataStoreDescriptions(
+        informationType: informationType,
+        values: ArrayList<Any>,
+        dateTime: LocalDateTime,
+        fragementActivity: FragmentActivity? = null
+    ): ArrayList<dataStoreDescription> {
         return arrayListOf<dataStoreDescription>(
-            dataStoreDescription(dataStoreType.googleSheets, informationType, value, dateTime),
-            dataStoreDescription(dataStoreType.fireStore, informationType, value, dateTime),
-            dataStoreDescription(dataStoreType.device, informationType, value, dateTime, fragementActivity))
+            dataStoreDescription(
+                dataStoreType.googleSheets,
+                informationType,
+                values,
+                dateTime,
+                fragementActivity
+            ),
+            dataStoreDescription(
+                dataStoreType.fireStore,
+                informationType,
+                values,
+                dateTime,
+                fragementActivity
+            ),
+            dataStoreDescription(
+                dataStoreType.device,
+                informationType,
+                values,
+                dateTime,
+                fragementActivity
+            )
+        )
     }
 
-    private fun getValue(dataStoreDescription: dataStoreDescription) : String
-    {
-        return when(dataStoreDescription.dataStoreType)
-        {
+    private fun getValue(dataStoreDescription: dataStoreDescription): ArrayList<String> {
+        return when (dataStoreDescription.dataStoreType) {
             dataStoreType.googleSheets -> {
-               httpService.sendGet(
-                            dataStoreDescription.getUrl(),
+                val result = arrayListOf<String>()
+                dataStoreDescription.getDataActions().forEach()
+                {
+                    result.add(
+                        httpService.sendGet(
+                            it.url,
                             this@dataGate.getParameter(
                                 this@dataGate.getValueParameter(),
-                                dataStoreDescription.getSheet(),
-                                dataStoreDescription.getColumn(),
-                                dataStoreDescription.getRow(),
-                                dataStoreDescription.getValueString()
+                                it.sheetName,
+                                it.col,
+                                it.row,
+                                it.value
                             )
-               )
+                        )
+                    )
+                }
+
+                return result
             }
 
-            dataStoreType.fireStore ->
-            {
-                ""
+            dataStoreType.fireStore -> {
+                arrayListOf<String>()
             }
 
-            dataStoreType.device ->
-            {
-                getValue(dataStoreDescription.getActivity(), dataStoreDescription.getKey())
+            dataStoreType.device -> {
+                val result = arrayListOf<String>()
+                dataStoreDescription.getDataActions().forEach()
+                {
+                    result.add(getValue(dataStoreDescription.activity, it.key))
+                }
+
+                return result
             }
 
             else -> {
-                ""
+                arrayListOf<String>()
             }
         }
     }
 
-    private fun sendValue(dataStoreDescription: dataStoreDescription)
-    {
-        when(dataStoreDescription.dataStoreType)
-        {
+    private fun sendValue(dataStoreDescription: dataStoreDescription) {
+        when (dataStoreDescription.dataStoreType) {
             dataStoreType.googleSheets -> {
                 GlobalScope.launch {
-                    if (httpService.sendGet(
-                        dataStoreDescription.getUrl(),
-                        this@dataGate.getParameter(
-                            this@dataGate.setValueParameter(),
-                            dataStoreDescription.getSheet(),
-                            dataStoreDescription.getColumn(),
-                            dataStoreDescription.getRow(),
-                            dataStoreDescription.getValueString()
-                        )
-                    ) != "OK")
+                    dataStoreDescription.getDataActions().forEach()
                     {
-                        //ToDo : add error handler
+
+                        if (httpService.sendGet(
+                                it.url,
+                                this@dataGate.getParameter(
+                                    this@dataGate.setValueParameter(),
+                                    it.sheetName,
+                                    it.col,
+                                    it.row,
+                                    it.value
+                                )
+                            ) != "OK"
+                        ) {
+                            //ToDo : add error handler
+                        }
                     }
                 }
             }
 
-            dataStoreType.fireStore ->
-            {
-                firestoreService.addData(dataStoreDescription.getCollection(), dataStoreDescription.getData())
+            dataStoreType.fireStore -> {
+                dataStoreDescription.getDataActions().forEach()
+                {
+                    firebaseFireStoreService.addData(
+                        it.collection,
+                        it.data)
+                }
+/*                firebaseFireStoreService.addData(
+                    dataStoreDescription.getCollection(),
+                    dataStoreDescription.getData()
+                )*/
             }
 
-            dataStoreType.device ->
-            {
-                sharedPrefGate.setValue(dataStoreDescription.getActivity(), dataStoreDescription.getKey(), dataStoreDescription.getValueString())
+            dataStoreType.device -> {
+                dataStoreDescription.getDataActions().forEach()
+                {
+                    sharedPrefGate.setValue(
+                        dataStoreDescription.activity,
+                        it.key,
+                        it.value)
+                }
+                /*sharedPrefGate.setValue(
+                    dataStoreDescription.getActivity(),
+                    dataStoreDescription.getKey(),
+                    dataStoreDescription.getValueString()
+                )*/
             }
 
             else -> {
@@ -205,20 +317,17 @@ object dataGate {
         return result
     }
 
-    fun getID() : String
-    {
+    fun getID(): String {
         val pattern = "dd/MM/yyyy"
         val simpleDateFormat = SimpleDateFormat(pattern)
         val date = simpleDateFormat.format(Date())
 
         var result = ""
         var lastNumber = 5
-        for (i in date.length - 1 downTo 0)
-        {
-            var number = (date.substring(i,i+1)).toIntOrNull()
+        for (i in date.length - 1 downTo 0) {
+            var number = (date.substring(i, i + 1)).toIntOrNull()
 
-            if (number == null)
-            {
+            if (number == null) {
                 number = 0
             }
 

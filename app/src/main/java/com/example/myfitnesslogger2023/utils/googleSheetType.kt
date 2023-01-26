@@ -13,7 +13,7 @@ enum class googleSheetType(val id: Int) {
             return when(this)
             {
                 dataSheet -> "Data"
-                activitySheet -> "Aktivität"
+                activitySheet -> "Aktivitaet"
                 caloriesSheet -> "Kalorien"
                 else -> "unbekannt"
             }

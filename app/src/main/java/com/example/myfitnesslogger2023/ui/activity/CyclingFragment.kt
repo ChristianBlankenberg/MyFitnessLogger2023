@@ -1,16 +1,13 @@
 package com.example.myfitnesslogger2023.ui.activity
 
-import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.myfitnesslogger2023.R
 import com.example.myfitnesslogger2023.databinding.FragmentCyclingBinding
-import com.example.myfitnesslogger2023.databinding.FragmentJoggingBinding
 
-class CyclingFragment(val parentContext : Context?) : TabulatorChildFragment(parentContext) {
+class CyclingFragment : TabulatorChildFragment() {
 
     private var _binding: FragmentCyclingBinding? = null
 
@@ -19,7 +16,7 @@ class CyclingFragment(val parentContext : Context?) : TabulatorChildFragment(par
     private val binding get() = _binding!!
 
     override fun GetTitle(): String {
-        return parentContext?.resources?.getText(R.string.cycling).toString()
+        return contextRef?.resources?.getText(R.string.cycling).toString()
     }
 
     override fun sendPreAction() {
@@ -44,6 +41,7 @@ class CyclingFragment(val parentContext : Context?) : TabulatorChildFragment(par
             distancemNP = binding.distancem,
             durationHrNP = binding.durationHr,
             durationmNP = binding.durationMin,
+            caloriesNP = binding.caloriesNP,
             distancekmMax = 300,
             durationHrMax = 18,
             30,
