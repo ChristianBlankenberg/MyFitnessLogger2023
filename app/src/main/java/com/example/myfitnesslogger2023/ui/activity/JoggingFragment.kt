@@ -27,10 +27,11 @@ class JoggingFragment : TabulatorChildFragment() {
         xbinding.distancem.clearFocus()
         xbinding.durationHr.clearFocus()
         xbinding.durationMin.clearFocus()
+        xbinding.caloriesNP.clearFocus()
     }
 
     override fun sendAction() {
-        joggingViewModel.sendJogginActivity(
+        joggingViewModel.sendActivity(
             xbinding.distanceKm.value,
             xbinding.distancem.value,
             xbinding.durationHr.value,
@@ -40,6 +41,7 @@ class JoggingFragment : TabulatorChildFragment() {
     }
 
     override fun reInitializeLabels() {
+
     }
 
     override fun onCreateView(

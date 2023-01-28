@@ -1,11 +1,9 @@
 package com.example.myfitnesslogger2023.utils
 
-import android.app.Activity
 import androidx.fragment.app.FragmentActivity
 import com.example.myfitnesslogger2023.enumerations.activityType
 import com.google.firebase.firestore.FieldValue
 import java.time.LocalDateTime
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -22,7 +20,7 @@ class dataStoreDescription(
     }
 
     private fun getActivityType(): activityType {
-        if (values.first() is activityType) {
+        if (values.count() > 0 && values.first() is activityType) {
             return values.first() as activityType
         }
 
@@ -36,6 +34,8 @@ class dataStoreDescription(
         val datas = getData()
         val valueStrings = getValueStrings()
 
+        var defaultHashmap = hashMapOf<String, Any>()
+
         if (columns.count() == keys.count()) {
             for (idx in 0..columns.count() - 1)
                 result.add(
@@ -47,7 +47,7 @@ class dataStoreDescription(
                         valueStrings.get(idx),
                         keys.get(idx),
                         getCollection(),
-                        datas.get(idx)
+                        if (idx < datas.count()) datas.get(idx) else defaultHashmap
                     )
                 )
         }
@@ -83,7 +83,14 @@ class dataStoreDescription(
             )
             com.example.myfitnesslogger2023.utils.informationType.information -> arrayListOf<Int>(5)
             com.example.myfitnesslogger2023.utils.informationType.activity -> {
-                return arrayListOf(3, 4, 9)
+                return when(getActivityType())
+                {
+                    activityType.jogging -> arrayListOf(3, 4, 9)
+                    activityType.cycling -> arrayListOf(3, 4, 10)
+                    activityType.hiking -> arrayListOf(3, 4, 11)
+                    activityType.workout ->  arrayListOf(3, 4, 12)
+                    else -> arrayListOf()
+                }
             }
             else -> arrayListOf<Int>()
         }
@@ -95,13 +102,34 @@ class dataStoreDescription(
 
     private fun getValueStrings(): ArrayList<String> {
         return if (informationType == com.example.myfitnesslogger2023.utils.informationType.activity) {
-            arrayListOf(
-                getValueString(values.get(1)),
-                getValueString(values.get(2)),
-                getValueString(values.get(3))
-            )
+            if (getActivityType() == activityType.workout)
+            {
+                arrayListOf(
+                    getValueString(values, 1),
+                    getValueString(values, 2),
+                    getValueString(values,2))
+
+            }
+            else {
+                arrayListOf(
+                    getValueString(values, 1),
+                    getValueString(values,2),
+                    getValueString(values, 3))
+            }
         } else {
             arrayListOf(getValueString(this.firstValue().toString()))
+        }
+    }
+
+    private fun getValueString(list : ArrayList<Any>, idx : Int) : String
+    {
+        if (list.count() > idx)
+        {
+            return getValueString(list.get(idx))
+        }
+        else
+        {
+            return ""
         }
     }
 

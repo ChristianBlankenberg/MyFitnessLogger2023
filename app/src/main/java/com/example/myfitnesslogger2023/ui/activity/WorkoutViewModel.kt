@@ -5,5 +5,5 @@ import com.example.myfitnesslogger2023.enumerations.activityType
 import com.example.myfitnesslogger2023.ui.baseClasses.SendInfoBaseViewModel
 import java.time.LocalDateTime
 
-class JoggingViewModel : SendActivityBaseViewModel(activityType.jogging) {
+class WorkoutViewModel : SendActivityBaseViewModel(activityType.workout) {
 }

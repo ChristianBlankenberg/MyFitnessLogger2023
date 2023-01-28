@@ -4,25 +4,40 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.example.myfitnesslogger2023.R
 import com.example.myfitnesslogger2023.databinding.FragmentCyclingBinding
 
 class CyclingFragment : TabulatorChildFragment() {
 
-    private var _binding: FragmentCyclingBinding? = null
+    private var binding: FragmentCyclingBinding? = null
+
+    private lateinit var cyclingViewModel : CyclingViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
-    private val binding get() = _binding!!
+    private val xbinding get() = binding!!
 
     override fun GetTitle(): String {
         return contextRef?.resources?.getText(R.string.cycling).toString()
     }
 
     override fun sendPreAction() {
+        xbinding.distanceKm.clearFocus()
+        xbinding.distancem.clearFocus()
+        xbinding.durationHr.clearFocus()
+        xbinding.durationMin.clearFocus()
+        xbinding.caloriesNP.clearFocus()
     }
 
     override fun sendAction() {
+        cyclingViewModel.sendActivity(
+            xbinding.distanceKm.value,
+            xbinding.distancem.value,
+            xbinding.durationHr.value,
+            xbinding.durationMin.value,
+            xbinding.caloriesNP.value
+        );
     }
 
     override fun reInitializeLabels() {
@@ -33,21 +48,24 @@ class CyclingFragment : TabulatorChildFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentCyclingBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        binding = FragmentCyclingBinding.inflate(inflater, container, false)
+        val root: View = xbinding.root
 
         initializeDistanceActivityControls(
-            distanceKmNP = binding.distanceKm,
-            distancemNP = binding.distancem,
-            durationHrNP = binding.durationHr,
-            durationmNP = binding.durationMin,
-            caloriesNP = binding.caloriesNP,
+            distanceKmNP = xbinding.distanceKm,
+            distancemNP = xbinding.distancem,
+            durationHrNP = xbinding.durationHr,
+            durationmNP = xbinding.durationMin,
+            caloriesNP = xbinding.caloriesNP,
             distancekmMax = 300,
             durationHrMax = 18,
             30,
             1
         )
 
+        cyclingViewModel = ViewModelProvider(this).get(CyclingViewModel::class.java)
+
+        initialize(cyclingViewModel, binding?.SendButton, binding?.circularProgress)
 
         return root
     }

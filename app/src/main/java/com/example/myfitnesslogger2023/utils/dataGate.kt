@@ -99,12 +99,18 @@ object dataGate {
         }
     }
 
+    fun getActivity(activity: activityType,
+                     dateTime: LocalDateTime,
+                     fragementActivity: FragmentActivity?) : ArrayList<String> {
+        return getAValue(dateTime, informationType.activity, arrayListOf(activity),fragementActivity)
+    }
+
     fun getKFA(dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null): Double? {
-        return getAValue(dateTime, informationType.kfa, fragementActivity).firstOrNull()?.toDoubleOrNull()
+        return getAValue(dateTime, informationType.kfa, arrayListOf(), fragementActivity).firstOrNull()?.toDoubleOrNull()
     }
 
     fun getWeight(dateTime: LocalDateTime, fragementActivity: FragmentActivity? = null): Double? {
-        return getAValue(dateTime, informationType.weight, fragementActivity).firstOrNull()?.toDoubleOrNull()
+        return getAValue(dateTime, informationType.weight, arrayListOf(), fragementActivity).firstOrNull()?.toDoubleOrNull()
     }
 
     fun getSleepDurationMinutes(
@@ -114,34 +120,36 @@ object dataGate {
         return getAValue(
             dateTime,
             informationType.sleepduration,
+            arrayListOf(),
             fragementActivity
         ).firstOrNull()?.toDoubleOrNull()
     }
 
     fun getInformation(dateTime: LocalDateTime, fragementActivity: FragmentActivity?): String {
-        return getAValue(dateTime, informationType.information, fragementActivity).firstOrNull() ?: ""
+        return getAValue(dateTime, informationType.information, arrayListOf(), fragementActivity).firstOrNull() ?: ""
     }
 
     private fun getAValue(
         dateTime: LocalDateTime,
         informationType: informationType,
+        values: ArrayList<Any>,
         fragementActivity: FragmentActivity? = null
     ): ArrayList<String> {
         val dataStoreDescription = dataStoreDescription(
             dataStoreType.device,
             informationType,
-            arrayListOf(),
+            values,
             dateTime,
             fragementActivity
         )
 
         var result = getValue(dataStoreDescription)
 
-        if (result.count() == 0) {
+        if (result.count() == 0 || result.all { it == ""}) {
             val dsc = dataStoreDescription(
                 dataStoreType.googleSheets,
                 informationType,
-                arrayListOf(),
+                values,
                 dateTime,
                 fragementActivity
             )

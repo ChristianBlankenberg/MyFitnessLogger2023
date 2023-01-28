@@ -24,6 +24,22 @@ abstract class ActivitySendInfoBaseFragment() : SendInfoBaseFragment() {
         distancemNP.maxValue = 99
         distancemNP.value = 0
 
+        initializeBsaeActivityControls(
+            durationHrNP,
+            durationmNP,
+            caloriesNP,
+            durationHrMax,
+            defaultValueDurationHr
+        )
+    }
+
+    fun initializeBsaeActivityControls(
+        durationHrNP : NumberPicker,
+        durationmNP : NumberPicker,
+        caloriesNP : NumberPicker,
+        durationHrMax : Int,
+        defaultValueDurationHr : Int)
+    {
         durationHrNP.minValue = 0
         durationHrNP.maxValue = durationHrMax
         durationHrNP.value = defaultValueDurationHr

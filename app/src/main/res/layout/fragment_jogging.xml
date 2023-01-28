@@ -113,12 +113,6 @@
 
             <!-- Content end -->
 
-            <Button
-                android:id="@+id/SendButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Send" />
-
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/circularProgress"
                 android:layout_width="match_parent"
@@ -127,10 +121,17 @@
                 android:indeterminate="true"
                 android:visibility="invisible" />
 
+            <Button
+                android:id="@+id/SendButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Send" />
+
             <androidx.legacy.widget.Space
                 android:layout_width="match_parent"
-                android:layout_height="60dp"/>
+                android:layout_height="120dp"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
+
     </ScrollView>
 </FrameLayout>

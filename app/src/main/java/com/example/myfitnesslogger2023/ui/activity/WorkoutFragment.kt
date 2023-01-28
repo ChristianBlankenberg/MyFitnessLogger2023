@@ -4,26 +4,38 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.example.myfitnesslogger2023.R
 import com.example.myfitnesslogger2023.databinding.FragmentWorkoutBinding
-import com.example.myfitnesslogger2023.services.FirebaseCrashlyticsService
 
 class WorkoutFragment : TabulatorChildFragment() {
 
-    private var _binding: FragmentWorkoutBinding? = null
+    private var binding: FragmentWorkoutBinding? = null
+
+    private lateinit var workoutViewModel: WorkoutViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
-    private val binding get() = _binding!!
+    private val xbinding get() = binding!!
 
     override fun GetTitle(): String {
         return contextRef?.resources?.getText(R.string.workout).toString()
     }
 
     override fun sendPreAction() {
+        xbinding.durationHr.clearFocus()
+        xbinding.durationMin.clearFocus()
+        xbinding.caloriesNP.clearFocus()
     }
 
     override fun sendAction() {
+        workoutViewModel.sendActivity(
+            0,
+            0,
+            xbinding.durationHr.value,
+            xbinding.durationMin.value,
+            xbinding.caloriesNP.value
+        );
     }
 
     override fun reInitializeLabels() {
@@ -34,13 +46,20 @@ class WorkoutFragment : TabulatorChildFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentWorkoutBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        binding = FragmentWorkoutBinding.inflate(inflater, container, false)
+        val root: View = xbinding.root
 
-        binding.SendButton.setOnClickListener {
-            FirebaseCrashlyticsService.log("Test Crash 2")
-            FirebaseCrashlyticsService.reportCrash(RuntimeException("Test Crash 2"))
-        }
+        initializeBsaeActivityControls(
+            xbinding.durationHr,
+            xbinding.durationMin,
+            xbinding.caloriesNP,
+            5,
+            1
+        )
+
+        workoutViewModel = ViewModelProvider(this).get(WorkoutViewModel::class.java)
+
+        initialize(workoutViewModel, binding?.SendButton, binding?.circularProgress)
 
         return root
     }
