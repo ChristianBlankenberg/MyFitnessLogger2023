@@ -1,6 +1,6 @@
 package com.CBPrograms.myfitnesslogger2023.utils
 
-class mathFunctions {
+object mathFunctions {
 
     fun getPreAndPastCommaValue(number : Double) : Pair<Int, Int>
     {

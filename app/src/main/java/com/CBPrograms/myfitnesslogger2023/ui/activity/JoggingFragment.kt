@@ -18,7 +18,6 @@ class JoggingFragment : TabulatorChildFragment() {
     private var binding: FragmentJoggingBinding? = null
 
     private lateinit var joggingViewModel: JoggingViewModel
-    private val mathFunctions = mathFunctions()
 
     // This property is only valid between onCreateView and
     // onDestroyView.

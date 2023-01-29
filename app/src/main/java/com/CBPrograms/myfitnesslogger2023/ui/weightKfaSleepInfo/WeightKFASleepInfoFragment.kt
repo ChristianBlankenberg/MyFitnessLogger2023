@@ -18,7 +18,6 @@ class WeightKFAFragment : SendInfoBaseFragment() {
 
     private lateinit var weightAndKFAViewModel: WeightKFASleepInfoViewModel
     private var binding: FragmentWeightKfaSleepdurationInfoBinding? = null
-    private val mathFunctions = mathFunctions()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
