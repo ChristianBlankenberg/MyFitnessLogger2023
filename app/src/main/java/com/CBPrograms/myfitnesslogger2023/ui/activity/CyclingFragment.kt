@@ -4,15 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.NumberPicker
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.CBPrograms.myfitnesslogger2023.R
 import com.CBPrograms.myfitnesslogger2023.databinding.FragmentCyclingBinding
+import com.CBPrograms.myfitnesslogger2023.ui.baseClasses.DistanceActivityFragment
+import com.CBPrograms.myfitnesslogger2023.utils.mathFunctions
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class CyclingFragment : TabulatorChildFragment() {
+class CyclingFragment : DistanceActivityFragment() {
 
     private var binding: FragmentCyclingBinding? = null
-
-    private lateinit var cyclingViewModel : CyclingViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,25 +26,19 @@ class CyclingFragment : TabulatorChildFragment() {
         return contextRef?.resources?.getText(R.string.cycling).toString()
     }
 
-    override fun sendPreAction() {
-        xbinding.distanceKm.clearFocus()
-        xbinding.distancem.clearFocus()
-        xbinding.durationHr.clearFocus()
-        xbinding.durationMin.clearFocus()
-        xbinding.caloriesNP.clearFocus()
+    override fun getReinitializeLabels() : Triple<TextView, TextView, TextView>
+    {
+        return Triple(xbinding.distanceLabel, xbinding.durationLabel, xbinding.caloriesLabel)
     }
 
-    override fun sendAction() {
-        cyclingViewModel.sendActivity(
-            xbinding.distanceKm.value,
-            xbinding.distancem.value,
-            xbinding.durationHr.value,
-            xbinding.durationMin.value,
-            xbinding.caloriesNP.value
-        );
-    }
-
-    override fun reInitializeLabels() {
+    override fun getNumberPickerDataControls() : ArrayList<NumberPicker?>
+    {
+        return arrayListOf(
+            xbinding.distanceKm,
+            xbinding.distancem,
+            xbinding.durationHr,
+            xbinding.durationMin,
+            xbinding.caloriesNP)
     }
 
     override fun onCreateView(
@@ -63,9 +61,9 @@ class CyclingFragment : TabulatorChildFragment() {
             1
         )
 
-        cyclingViewModel = ViewModelProvider(this).get(CyclingViewModel::class.java)
+        sendActivityBaseViewModel = ViewModelProvider(this).get(CyclingViewModel::class.java)
 
-        initialize(cyclingViewModel, binding?.SendButton, binding?.circularProgress)
+        initialize(sendActivityBaseViewModel, binding?.SendButton, binding?.circularProgress)
 
         return root
     }

@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.NumberPicker
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.CBPrograms.myfitnesslogger2023.R
 import com.CBPrograms.myfitnesslogger2023.databinding.FragmentHikingBinding
+import com.CBPrograms.myfitnesslogger2023.ui.baseClasses.DistanceActivityFragment
 
-class HikingFragment : TabulatorChildFragment() {
+class HikingFragment : DistanceActivityFragment() {
 
     private var binding: FragmentHikingBinding? = null
-
-    private lateinit var hikingViewModel : HikingViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,25 +23,19 @@ class HikingFragment : TabulatorChildFragment() {
         return contextRef?.resources?.getText(R.string.hiking).toString()
     }
 
-    override fun sendPreAction() {
-        xbinding.distanceKm.clearFocus()
-        xbinding.distancem.clearFocus()
-        xbinding.durationHr.clearFocus()
-        xbinding.durationMin.clearFocus()
-        xbinding.caloriesNP.clearFocus()
+    override fun getReinitializeLabels() : Triple<TextView?, TextView?, TextView?>
+    {
+        return Triple(xbinding.distanceLabel, xbinding.durationLabel, xbinding.caloriesLabel)
     }
 
-    override fun sendAction() {
-        hikingViewModel.sendActivity(
-            xbinding.distanceKm.value,
-            xbinding.distancem.value,
-            xbinding.durationHr.value,
-            xbinding.durationMin.value,
-            xbinding.caloriesNP.value
-        );
-    }
-
-    override fun reInitializeLabels() {
+    override fun getNumberPickerDataControls() : ArrayList<NumberPicker?>
+    {
+        return arrayListOf(
+            xbinding.distanceKm,
+            xbinding.distancem,
+            xbinding.durationHr,
+            xbinding.durationMin,
+            xbinding.caloriesNP)
     }
 
     override fun onCreateView(
@@ -63,9 +58,9 @@ class HikingFragment : TabulatorChildFragment() {
             5
         )
 
-        hikingViewModel = ViewModelProvider(this).get(HikingViewModel::class.java)
+        sendActivityBaseViewModel = ViewModelProvider(this).get(HikingViewModel::class.java)
 
-        initialize(hikingViewModel, binding?.SendButton, binding?.circularProgress)
+        initialize(sendActivityBaseViewModel, binding?.SendButton, binding?.circularProgress)
 
         return root
     }
