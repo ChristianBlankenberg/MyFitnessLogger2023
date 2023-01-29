@@ -1,39 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DesignSurface">
-    <option name="filePathToZoomLevelMap">
-      <map>
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/drawable/ic_body_weight_scales_icon.xml" value="0.2703125" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.2703125" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.2703125" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/layout/fragment_activity.xml" value="0.1" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/layout/fragment_cycling.xml" value="0.178125" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/layout/fragment_dashboard.xml" value="0.24365942028985507" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/layout/fragment_hiking.xml" value="0.10520833333333333" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/layout/fragment_home.xml" value="0.13020833333333334" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/layout/fragment_jogging.xml" value="0.11392405063291139" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/layout/fragment_notifications.xml" value="0.24365942028985507" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/layout/fragment_sleep_and_info.xml" value="0.14322916666666666" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/layout/fragment_weight_and_kfa.xml" value="0.1" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/layout/fragment_weight_kfa_sleepduration_info.xml" value="0.1" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/layout/fragment_workout.xml" value="0.10520833333333333" />
-        <entry key="..\:/Daten/Privat/MyFitnessLogger2023/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
-      </map>
-    </option>
-  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
-  </component>
-  <component name="VisualizationToolProject">
-    <option name="state">
-      <ProjectState>
-        <option name="scale" value="0.12" />
-      </ProjectState>
-    </option>
   </component>
 </project>

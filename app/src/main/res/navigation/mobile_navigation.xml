@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/navigation_weight_and_kfa"
-        android:name="com.example.myfitnesslogger2023.ui.weightKfaSleepInfo.WeightKFAFragment"
+        android:name="com.CBPrograms.myfitnesslogger2023.ui.weightKfaSleepInfo.WeightKFAFragment"
         android:label="@string/title_weight_and_kfa"
         tools:layout="@layout/fragment_weight_kfa_sleepduration_info" />
 
     <fragment
         android:id="@+id/navigation_sleep_and_info"
-        android:name="com.example.myfitnesslogger2023.ui.sleepAndInfo.SleepAndInfoFragment"
+        android:name="com.CBPrograms.myfitnesslogger2023.ui.sleepAndInfo.SleepAndInfoFragment"
         android:label="@string/title_sleep_and_info"
         tools:layout="@layout/fragment_sleep_and_info" />
 
     <fragment
         android:id="@+id/navigation_activity"
-        android:name="com.example.myfitnesslogger2023.ui.activity.ActivityFragment"
+        android:name="com.CBPrograms.myfitnesslogger2023.ui.activity.ActivityFragment"
         android:label="@string/title_activity"
         tools:layout="@layout/fragment_activity" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.myfitnesslogger2023.ui.dashboard.DashboardFragment"
+        android:name="com.CBPrograms.myfitnesslogger2023.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 

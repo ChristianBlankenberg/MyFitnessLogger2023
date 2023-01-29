@@ -1,0 +1,210 @@
+function doGet(e) {
+  return perform(e.queryString)
+}
+
+function test()
+{
+  /*Logger.log("test()")
+  //perform("Ex=Set&Sh=data&Col=6&Row=332&Val=")
+
+  var date = Utilities.formatDate(new Date(), "GMT+1", "dd/MM/yyyy")
+  Logger.log(date)
+  var result = ""
+  var lastNumber = 5
+  for (var i = date.length - 1; i > -1; i--)
+  {
+    var number = parseInt(date.substring(i,i+1))
+
+    if (isNaN(number))
+    {
+      number = 0
+    }
+
+    result = result + (number + lastNumber)
+    lastNumber = number
+  }
+  */
+  //Logger.log(getID())
+
+  perform("Ex=Get&Sh=Data&Col=5&Row=8&Id=8522211077")
+}
+
+function getID()
+{
+  var date = Utilities.formatDate(new Date(), "GMT+1", "dd/MM/yyyy")
+  var result = ""
+  var lastNumber = 5
+  for (var i = date.length - 1; i > -1; i--)
+  {
+    var number = parseInt(date.substring(i,i+1))
+
+    if (isNaN(number))
+    {
+      number = 0
+    }
+
+    result = result + (number + lastNumber)
+    lastNumber = number
+  }
+
+  return result
+}
+
+function perform(parameters)
+{
+    Logger.log(parameters)
+
+    var sheet = SpreadsheetApp.openById(globalVariables().sheetID)
+    params = parseParameters(parameters)
+
+    Logger.log(params)
+
+    if (params[0].toLowerCase() == "set")
+    {
+      if (params[5] == getID())
+      {
+        newParams = [ params[1], params[2], params[3], params[4]]
+        return ContentService.createTextOutput(insertDataToDataSheet(newParams))
+      }
+      else
+      {
+        return ContentService.createTextOutput("No Access")
+      }
+    }
+    else if (params[0].toLowerCase() == "get")
+    {
+      if (params[5] == getID())
+      {
+        newParams = [ params[1], params[2], params[3]]
+        return ContentService.createTextOutput(getDataFromDataEvaluationSheet(newParams))
+      }
+      else
+      {
+        return ContentService.createTextOutput("No Access")
+      }
+    }
+  }
+
+function globalVariables()
+ {
+    var variables = {
+    dataSheetName: "Data",
+    dataEvaluationSheetName: "DataEvaluation",
+    sheetID: "1ktsfXur8tJUk577dO-KqqMDxbFjAXS1tqKHbSR5l90g"
+  };
+  return variables;
+ }
+
+function getDataFromDataEvaluationSheet(parameters)
+{
+    var sheet = SpreadsheetApp.openById(globalVariables().sheetID)
+
+    if (parameters.length == 3 && parameters[1] != 0 && parameters[2] != 0)
+    {
+      return this.getData(sheet, parameters[0], parameters[1], parameters[2])
+    }
+
+    return "Error"
+}
+
+function insertDataToDataSheet(parameters)
+{
+    var sheet = SpreadsheetApp.openById(globalVariables().sheetID)
+
+    if (parameters.length == 4 && parameters[1] != 0 && parameters[2] != 0)
+    {
+      this.inserData(sheet, parameters[0], parameters[1], parameters[2], parameters[3])
+      return "OK"
+    }
+
+    return "Error"
+}
+
+function parseParameters(parameters)
+{
+    result = [0,0,0,0,0,0]
+
+    params = parameters.split("&")
+    paramsLengt = params.length
+    for (var i = 0; i < paramsLengt; i++)
+    {
+      keyValuePair = this.parseKeyValue(params[i])
+
+      if (keyValuePair[0].toLowerCase() == "ex")
+      {
+        result[0] = keyValuePair[1]
+      }
+
+      if (keyValuePair[0].toLowerCase() == "sh")
+      {
+        result[1] = keyValuePair[1]
+      }
+
+      if (keyValuePair[0].toLowerCase() == "col")
+      {
+        result[2] = keyValuePair[1]
+      }
+
+      if (keyValuePair[0].toLowerCase() == "row")
+      {
+        result[3] = keyValuePair[1]
+      }
+
+      if (keyValuePair[0].toLowerCase() == "val")
+      {
+        result[4] = replaceAll(keyValuePair[1].toString())
+      }
+
+      if (keyValuePair[0].toLowerCase() == "id")
+      {
+        result[5] = replaceAll(keyValuePair[1].toString())
+      }
+    }
+
+    return result
+}
+
+function replaceAll(str)
+{
+  while (str != str.replace("+", " "))
+  {
+    str = str.replace("+", " ")
+  }
+
+  return str
+}
+
+function parseKeyValue(keyValueString)
+{
+  return keyValueString.split("=")
+}
+
+function getData(sheet, sheeetName, col, row)
+{
+  var columnLetter = this.columnNumberToColumnLetter(col)
+  var a1NotationRange = sheeetName+"!"+columnLetter+row
+  var cell = sheet.getRange(a1NotationRange)
+  return cell.getValue()
+}
+
+function inserData(sheet, sheeetName, col, row, value)
+{
+  var columnLetter = this.columnNumberToColumnLetter(col)
+  var a1NotationRange = sheeetName+"!"+columnLetter+row
+  var cell = sheet.getRange(a1NotationRange)
+  cell.setValue(value)
+}
+
+/**
+* Column to Letter
+* from StackOverflow: http://stackoverflow.com/questions/21229180/convert-column-index-into-corresponding-column-letter
+*/
+function columnNumberToColumnLetter(column) {
+  var temp, letter = '';
+  while (column > 0) {
+    temp = (column - 1) % 26;
+    letter = String.fromCharCode(temp + 65) + letter;
+    column = (column - temp - 1) / 26;
+  }
+  return letter;
+}
