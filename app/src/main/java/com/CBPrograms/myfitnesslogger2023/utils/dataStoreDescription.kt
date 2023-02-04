@@ -1,7 +1,9 @@
 package com.CBPrograms.myfitnesslogger2023.utils
 
 import androidx.fragment.app.FragmentActivity
-import com.CBPrograms.myfitnesslogger2023.enumerations.activityType
+import com.CBPrograms.myfitnesslogger2023.enumerations.dataStoreType
+import com.CBPrograms.myfitnesslogger2023.enumerations.googleSheetType
+import com.CBPrograms.myfitnesslogger2023.enumerations.informationType
 import com.google.firebase.firestore.FieldValue
 import java.time.LocalDateTime
 import kotlin.collections.ArrayList
@@ -65,24 +67,24 @@ class dataStoreDescription(
 
     private fun getSheetOrDatabaseOf(informationType: informationType): googleSheetType {
         return when (informationType) {
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.weight,
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.kfa,
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.sleepduration,
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.information -> googleSheetType.dataSheet
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.activity -> googleSheetType.activitySheet
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.weight,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.kfa,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.sleepduration,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.information -> googleSheetType.dataSheet
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity -> googleSheetType.activitySheet
             else -> googleSheetType.unknown
         }
     }
 
     private fun getColumns(): ArrayList<Int> {
         return when (informationType) {
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.weight -> arrayListOf<Int>(2)
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.kfa -> arrayListOf<Int>(3)
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.sleepduration -> arrayListOf<Int>(
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.weight -> arrayListOf<Int>(2)
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.kfa -> arrayListOf<Int>(3)
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.sleepduration -> arrayListOf<Int>(
                 4
             )
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.information -> arrayListOf<Int>(5)
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.activity -> {
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.information -> arrayListOf<Int>(5)
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity -> {
                 return when(getActivityType())
                 {
                     com.CBPrograms.myfitnesslogger2023.enumerations.activityType.jogging -> arrayListOf(3, 4, 9)
@@ -101,7 +103,7 @@ class dataStoreDescription(
     }
 
     private fun getValueStrings(): ArrayList<String> {
-        return if (informationType == com.CBPrograms.myfitnesslogger2023.utils.informationType.activity) {
+        return if (informationType == com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity) {
             if (getActivityType() == com.CBPrograms.myfitnesslogger2023.enumerations.activityType.workout)
             {
                 arrayListOf(
@@ -135,8 +137,8 @@ class dataStoreDescription(
 
     fun getValueString(value: Any?): String {
         return when (dataStoreType) {
-            com.CBPrograms.myfitnesslogger2023.utils.dataStoreType.googleSheets -> {
-                return if (informationType == com.CBPrograms.myfitnesslogger2023.utils.informationType.information) {
+            com.CBPrograms.myfitnesslogger2023.enumerations.dataStoreType.googleSheets -> {
+                return if (informationType == com.CBPrograms.myfitnesslogger2023.enumerations.informationType.information) {
                     value?.toString() ?: "?"
                 } else {
                     getDoubleValueString(
@@ -153,7 +155,7 @@ class dataStoreDescription(
     }
 
     private fun getKeys(): ArrayList<String> {
-        if (this.informationType == com.CBPrograms.myfitnesslogger2023.utils.informationType.activity) {
+        if (this.informationType == com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity) {
             //ToDo
             return arrayListOf(
                 "activityDuration" + this.getRow().toString(),
@@ -171,10 +173,10 @@ class dataStoreDescription(
 
     fun getData(): ArrayList<HashMap<String, Any>> {
         return when (informationType) {
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.weight,
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.kfa,
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.sleepduration,
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.information ->
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.weight,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.kfa,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.sleepduration,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.information ->
                 arrayListOf(
                     hashMapOf<String, Any>(
                         "date" to this.dateTime,
@@ -184,7 +186,7 @@ class dataStoreDescription(
                         "database" to this.getDatabase()
                     )
                 )
-            com.CBPrograms.myfitnesslogger2023.utils.informationType.activity -> {
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity -> {
                 val result = arrayListOf<HashMap<String, Any>>()
 
                 values.forEach {

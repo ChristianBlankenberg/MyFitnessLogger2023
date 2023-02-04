@@ -62,7 +62,7 @@
             android:orientation="horizontal">
 
             <NumberPicker
-                android:id="@+id/KFAGreat"
+                android:id="@+id/kfaGreat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -75,7 +75,7 @@
                 android:textSize="24sp"/>
 
             <NumberPicker
-                android:id="@+id/KFASmall"
+                android:id="@+id/kfaSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

@@ -7,13 +7,9 @@ import android.view.ViewGroup
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import com.CBPrograms.myfitnesslogger2023.utils.informationType
 import com.CBPrograms.myfitnesslogger2023.R
 import com.CBPrograms.myfitnesslogger2023.databinding.FragmentJoggingBinding
 import com.CBPrograms.myfitnesslogger2023.ui.baseClasses.DistanceActivityFragment
-import com.CBPrograms.myfitnesslogger2023.utils.mathFunctions
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 class JoggingFragment : DistanceActivityFragment() {

@@ -4,13 +4,15 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.NumberPicker
 import android.widget.TextView
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import com.CBPrograms.myfitnesslogger2023.services.keyboardService
+import com.CBPrograms.myfitnesslogger2023.utils.mathFunctions
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 abstract class SendInfoBaseFragment : BaseFragment() {
@@ -47,6 +49,131 @@ abstract class SendInfoBaseFragment : BaseFragment() {
 
         return true //== DialogInterface.BUTTON_POSITIVE
     }
+
+    protected fun getYesterdaysTodaysValueInformation(
+        todaysValue: Double?,
+        yesterdaysValue: Double?
+    ): String {
+        val result =
+            if (todaysValue != null) {
+                if (yesterdaysValue != null) {
+                    val sign = if (yesterdaysValue < todaysValue) "+" else "-"
+                    todaysValue.toShortString().plus(" / ").plus(sign).plus(" ")
+                        .plus(Math.abs(yesterdaysValue - todaysValue).toShortString())
+                } else {
+                    todaysValue.toShortString().plus(" / ?")
+                }
+            } else {
+                if (yesterdaysValue != null) {
+                    "? / ".plus(yesterdaysValue.toShortString())
+                } else {
+                    "?"
+                }
+            }
+
+        return result
+    }
+
+    protected fun observeTodaysYesterDaysDoubleFlowsAndSetControls(
+        todaysFlow : Flow<ArrayList<String>>,
+        yesterdaysFlow : Flow<ArrayList<String>>,
+        labelID: Int,
+        aLabel: TextView?,
+        preCommaNumberPicker : NumberPicker?,
+        pastCommaNumberPicker : NumberPicker?)
+    {
+        GlobalScope.launch {
+            var todaysValue: Double? = null;
+            var yesterdaysValue: Double? = null;
+
+            fun checkTodayYesterdayLabel() {
+                activity?.runOnUiThread {
+                    if (todaysValue != null && yesterdaysValue != null) {
+
+                        this@SendInfoBaseFragment.initializeALabel(
+                            aLabel,
+                            labelID,
+                            getYesterdaysTodaysValueInformation(todaysValue, yesterdaysValue))
+                    }
+                }
+            }
+
+            todaysFlow.collect {
+                activity?.runOnUiThread {
+                    todaysValue = it.firstOrNull()?.toDoubleOrNull()
+                    var todaysWeightPreAndPastComma =
+                        mathFunctions.getPreAndPastCommaValue(todaysValue ?: 0.0)
+
+                    preCommaNumberPicker?.value =
+                        todaysWeightPreAndPastComma!!.first
+                    pastCommaNumberPicker?.value =
+                        todaysWeightPreAndPastComma!!.second
+
+                    checkTodayYesterdayLabel()
+                }
+            }
+
+            yesterdaysFlow.collect {
+                activity?.runOnUiThread {
+                    yesterdaysValue = it.firstOrNull()?.toDoubleOrNull()
+                    checkTodayYesterdayLabel()
+                }
+            }
+        }
+    }
+
+    protected fun observeTodaysDurationFlowAndSetControls(
+        todaysFlow : Flow<ArrayList<String>>,
+        labelID: Int,
+        aLabel: TextView?,
+        hourNumberPicker : NumberPicker?,
+        minutesNumberPicker : NumberPicker?)
+    {
+        GlobalScope.launch {
+            var minutes: Int? = null;
+
+            todaysFlow.collect {
+                activity?.runOnUiThread {
+                    minutes = it.firstOrNull()?.toIntOrNull()
+
+                    val durationHoursAndMinutes =
+                        mathFunctions.getHoursAndMinutes(minutes ?: 0)
+
+                    hourNumberPicker?.value =
+                        durationHoursAndMinutes.first.toInt()
+                    minutesNumberPicker?.value =
+                        durationHoursAndMinutes.second.toInt()
+
+                    this@SendInfoBaseFragment.initializeALabel(
+                        aLabel,
+                        labelID,
+                        durationHoursAndMinutes.first + ":" + durationHoursAndMinutes.second)
+                }
+            }
+        }
+    }
+
+    protected fun observeTodaysStringFlowAndSetControls(
+        todaysFlow : Flow<ArrayList<String>>,
+        labelID: Int,
+        aLabel: TextView?)
+    {
+        GlobalScope.launch {
+            var information: String = "";
+
+            todaysFlow.collect {
+                activity?.runOnUiThread {
+                    information = it.first()
+
+                    this@SendInfoBaseFragment.initializeALabel(
+                        aLabel,
+                        labelID,
+                        information)
+                }
+            }
+        }
+    }
+
 
     protected fun initializeALabel(aLabel: TextView?, labelID: Int, todaysValue: String) {
         if (aLabel != null) {

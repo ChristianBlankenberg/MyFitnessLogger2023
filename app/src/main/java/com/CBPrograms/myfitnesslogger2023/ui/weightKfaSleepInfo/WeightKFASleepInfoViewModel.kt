@@ -3,8 +3,10 @@ package com.CBPrograms.myfitnesslogger2023.ui.weightKfaSleepInfo
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.CBPrograms.myfitnesslogger2023.businesslogic.dataGate
+import com.CBPrograms.myfitnesslogger2023.enumerations.informationType
 import com.CBPrograms.myfitnesslogger2023.ui.baseClasses.SendInfoBaseViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import java.time.LocalDateTime
 
 class WeightKFASleepInfoViewModel : SendInfoBaseViewModel() {
@@ -36,15 +38,16 @@ class WeightKFASleepInfoViewModel : SendInfoBaseViewModel() {
     //endregion
 
     //region Get functions
+/*
     fun getPastKFA(deltaDays: Int, fragmentActivity : FragmentActivity? = null): Double?
     {
         return dataGate.getKFA(LocalDateTime.now().plusDays(deltaDays.toLong()), fragmentActivity)
     }
-
-    fun getPastWeight(deltaDays: Int, fragmentActivity : FragmentActivity? = null): Double? {
-        return dataGate.getWeight(LocalDateTime.now().plusDays(deltaDays.toLong()), fragmentActivity)
+*/
+    fun getPastInformationFlow(informationType : informationType, deltaDays: Int, fragmentActivity : FragmentActivity? = null): Flow<ArrayList<String>> {
+        return dataGate.getAFlow(informationType, LocalDateTime.now().plusDays(deltaDays.toLong()), fragmentActivity)
     }
-
+/*
     fun getTodaysSleepDurationMinutes(fragementActivity: FragmentActivity? = null): String {
         val sleepDurationMinutes = dataGate.getSleepDurationMinutes(LocalDateTime.now(), fragementActivity)
         if (sleepDurationMinutes != null)
@@ -57,6 +60,8 @@ class WeightKFASleepInfoViewModel : SendInfoBaseViewModel() {
             return  "?"
         }
     }
+    */
+
 /*
         fun getTodaysSleepDurationHours(fragementActivity: FragmentActivity? = null): String {
         val sleepDurationMinutes = dataGate.getSleepDurationMinutes(LocalDateTime.now(), fragementActivity)
@@ -83,10 +88,12 @@ class WeightKFASleepInfoViewModel : SendInfoBaseViewModel() {
         }
     }
  */
-
+/*
     fun getInformation(fragementActivity: FragmentActivity? = null): String {
         return dataGate.getInformation(LocalDateTime.now(), fragementActivity) ?: ""
     }
+
+ */
     //endregion
 
 }

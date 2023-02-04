@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.NumberPicker
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.CBPrograms.myfitnesslogger2023.ui.baseClasses.SendInfoBaseFragment
 import com.CBPrograms.myfitnesslogger2023.utils.mathFunctions
 import com.CBPrograms.myfitnesslogger2023.R
 import com.CBPrograms.myfitnesslogger2023.databinding.FragmentWeightKfaSleepdurationInfoBinding
+import com.CBPrograms.myfitnesslogger2023.enumerations.informationType
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.lang.Math.abs
 
@@ -40,7 +44,42 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         // initialize fragment controls
         initializeNumberPickers()
 
+        initializeFlows()
+
         return root
+    }
+
+    private fun initializeFlows() {
+        this.observeTodaysYesterDaysDoubleFlowsAndSetControls(
+            weightAndKFAViewModel.getPastInformationFlow(informationType.weight,0, activity),
+            weightAndKFAViewModel.getPastInformationFlow(informationType.weight, -1, activity),
+            R.string.weight,
+            this@WeightKFAFragment.binding?.weightLabel,
+            this@WeightKFAFragment.binding?.weightGreat,
+            this@WeightKFAFragment.binding?.weightSmall
+        )
+
+        this.observeTodaysYesterDaysDoubleFlowsAndSetControls(
+            weightAndKFAViewModel.getPastInformationFlow(informationType.kfa,0, activity),
+            weightAndKFAViewModel.getPastInformationFlow(informationType.kfa, -1, activity),
+            R.string.kfa,
+            this@WeightKFAFragment.binding?.kfaLabel,
+            this@WeightKFAFragment.binding?.kfaGreat,
+            this@WeightKFAFragment.binding?.kfaSmall
+        )
+
+        this.observeTodaysDurationFlowAndSetControls(
+            weightAndKFAViewModel.getPastInformationFlow(informationType.sleepduration, 0, activity),
+            R.string.sleepDuration,
+            this@WeightKFAFragment.binding?.sleepDurationLabel,
+            this@WeightKFAFragment.binding?.sleepDurationHours,
+            this@WeightKFAFragment.binding?.sleepDurationMinutes
+        )
+
+        this.observeTodaysStringFlowAndSetControls(
+            weightAndKFAViewModel.getPastInformationFlow(informationType.information, 0, activity),
+            R.string.info,
+            this@WeightKFAFragment.binding?.infoLabel)
     }
 
     override fun onDestroyView() {
@@ -48,82 +87,14 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         binding = null
     }
 
-    private fun getYesterdaysTodaysWeightInformation(todaysWeight: Double?): String {
-        val yesterdaysWeight = this.weightAndKFAViewModel.getPastWeight(-1, activity)
-
-        return getYesterdaysTodaysValueInformation(todaysWeight, yesterdaysWeight)
-    }
-
-    private fun getYesterdaysTodaysKFAInformation(todaysKFA: Double?): String {
-        val yesterdaysKFA = this.weightAndKFAViewModel.getPastKFA(-1, activity)
-
-        return getYesterdaysTodaysValueInformation(todaysKFA, yesterdaysKFA)
-    }
-
     override fun reInitializeLabels() {
-        GlobalScope.launch {
-            val todaysWeight = weightAndKFAViewModel.getPastWeight(0, activity)
-            val todaysKFA = weightAndKFAViewModel.getPastKFA(0, activity)
-
-            val yesterdaysTodaysWeightInformation =
-                this@WeightKFAFragment.getYesterdaysTodaysWeightInformation(todaysWeight)
-            val yesterdaysTodaysKFAInformation =
-                this@WeightKFAFragment.getYesterdaysTodaysKFAInformation(todaysKFA)
-
-            val sleepdurationMinutes = weightAndKFAViewModel.getTodaysSleepDurationMinutes(activity).toIntOrNull() ?: 0
-
-            val sleepdurationHoursAndMinutes = mathFunctions.getHoursAndMinutes(sleepdurationMinutes)
-
-            val information = weightAndKFAViewModel.getInformation(activity)
-
-            activity?.runOnUiThread {
-                this@WeightKFAFragment.initializeALabel(
-                    this@WeightKFAFragment.binding?.weightLabel,
-                    R.string.weight,
-                    yesterdaysTodaysWeightInformation
-                )
-                this@WeightKFAFragment.initializeALabel(
-                    this@WeightKFAFragment.binding?.kfaLabel,
-                    R.string.kfa,
-                    yesterdaysTodaysKFAInformation
-                )
-
-                this@WeightKFAFragment.initializeALabel(
-                    this@WeightKFAFragment.binding?.sleepDurationLabel,
-                    R.string.sleepDuration,
-                    sleepdurationHoursAndMinutes.first + ":" + sleepdurationHoursAndMinutes.second
-                )
-                this@WeightKFAFragment.initializeALabel(
-                    this@WeightKFAFragment.binding?.infoLabel,
-                    R.string.info,
-                    information
-                )
-
-                val todaysWeightPreAndPastComma =
-                    mathFunctions.getPreAndPastCommaValue(todaysWeight ?: 0.0)
-                val todaysKFAComma = mathFunctions.getPreAndPastCommaValue(todaysKFA ?: 0.0)
-
-                this@WeightKFAFragment.binding?.weightGreat?.value =
-                    todaysWeightPreAndPastComma.first
-                this@WeightKFAFragment.binding?.weightSmall?.value =
-                    todaysWeightPreAndPastComma.second
-
-                this@WeightKFAFragment.binding?.KFAGreat?.value = todaysKFAComma.first
-                this@WeightKFAFragment.binding?.KFASmall?.value = todaysKFAComma.second
-
-                this@WeightKFAFragment.binding?.sleepDurationHours?.value =
-                    sleepdurationHoursAndMinutes.first.toIntOrNull() ?: 8
-                this@WeightKFAFragment.binding?.sleepDurationMinutes?.value =
-                    sleepdurationHoursAndMinutes.second.toIntOrNull() ?: 0
-            }
-        }
     }
 
     override fun sendPreAction() {
         xbinding.weightGreat.clearFocus()
         xbinding.weightSmall.clearFocus()
-        xbinding.KFAGreat.clearFocus()
-        xbinding.KFASmall.clearFocus()
+        xbinding.kfaGreat.clearFocus()
+        xbinding.kfaSmall.clearFocus()
         xbinding.sleepDurationHours.clearFocus()
         xbinding.sleepDurationMinutes.clearFocus()
         xbinding.infoTextInput.clearFocus()
@@ -133,9 +104,9 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         weightAndKFAViewModel.sendData(
             xbinding.weightGreat.value,
             xbinding.weightSmall.value,
-            xbinding.KFAGreat.value,
-            xbinding.KFASmall.value,
-            xbinding.KFASmall.isVisible,
+            xbinding.kfaGreat.value,
+            xbinding.kfaSmall.value,
+            xbinding.kfaSmall.isVisible,
             activity
         )
 
@@ -145,7 +116,6 @@ class WeightKFAFragment : SendInfoBaseFragment() {
             activity
         )
         weightAndKFAViewModel.sendInformation(xbinding.infoTextInput.text.toString(), activity)
-
     }
 
     private fun initializeNumberPickers() {
@@ -157,56 +127,15 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         xbinding.weightSmall.maxValue = 9
         xbinding.weightSmall.value = 5
 
-        xbinding.KFAGreat.minValue = 17
-        xbinding.KFAGreat.maxValue = 25
-        xbinding.KFAGreat.value = 21
+        xbinding.kfaGreat.minValue = 17
+        xbinding.kfaGreat.maxValue = 25
+        xbinding.kfaGreat.value = 21
 
-        /*
-        xbinding.KFAGreat.setFormatter {
-            when (it) {
-                17 -> {
-                    xbinding.KFASmall.isVisible = false
-                    xbinding.kfaComma.isVisible = false
-                    "-"
-                }
-                else -> {
-                    xbinding.KFASmall.isVisible = true
-                    xbinding.kfaComma.isVisible = true
-                    it.toString()
-                }
-            }
-        }*/
-
-        xbinding.KFASmall.minValue = 0
-        xbinding.KFASmall.maxValue = 9
-        xbinding.KFASmall.value = 5
+        xbinding.kfaSmall.minValue = 0
+        xbinding.kfaSmall.maxValue = 9
+        xbinding.kfaSmall.value = 5
 
         initializeDurationNumberPickers(xbinding.sleepDurationHours, xbinding.sleepDurationMinutes)
-    }
-
-
-    private fun getYesterdaysTodaysValueInformation(
-        todaysValue: Double?,
-        yesterdaysValue: Double?
-    ): String {
-        val result =
-            if (todaysValue != null) {
-                if (yesterdaysValue != null) {
-                    val sign = if (yesterdaysValue < todaysValue) "+" else "-"
-                    todaysValue.toShortString().plus(" / ").plus(sign).plus(" ")
-                        .plus(abs(yesterdaysValue - todaysValue).toShortString())
-                } else {
-                    todaysValue.toShortString().plus(" / ?")
-                }
-            } else {
-                if (yesterdaysValue != null) {
-                    "? / ".plus(yesterdaysValue.toShortString())
-                } else {
-                    "?"
-                }
-            }
-
-        return result
     }
 }
 
