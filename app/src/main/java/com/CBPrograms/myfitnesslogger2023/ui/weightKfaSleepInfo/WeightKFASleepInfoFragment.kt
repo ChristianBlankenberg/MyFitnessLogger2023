@@ -51,8 +51,8 @@ class WeightKFAFragment : SendInfoBaseFragment() {
 
     private fun initializeFlows() {
         this.observeTodaysYesterDaysDoubleFlowsAndSetControls(
-            weightAndKFAViewModel.getPastInformationFlow(informationType.weight, 0, activity),
-            weightAndKFAViewModel.getPastInformationFlow(informationType.weight, -1, activity),
+            weightAndKFAViewModel.getPastInformationFlow(informationType.weight, true,0, activity),
+            weightAndKFAViewModel.getPastInformationFlow(informationType.weight, false, -1, activity),
             R.string.weight,
             this@WeightKFAFragment.binding?.weightLabel,
             this@WeightKFAFragment.binding?.weightGreat,
@@ -60,8 +60,8 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         )
 
         this.observeTodaysYesterDaysDoubleFlowsAndSetControls(
-            weightAndKFAViewModel.getPastInformationFlow(informationType.kfa, 0, activity),
-            weightAndKFAViewModel.getPastInformationFlow(informationType.kfa, -1, activity),
+            weightAndKFAViewModel.getPastInformationFlow(informationType.kfa, true,0, activity),
+            weightAndKFAViewModel.getPastInformationFlow(informationType.kfa, false, -1, activity),
             R.string.kfa,
             this@WeightKFAFragment.binding?.kfaLabel,
             this@WeightKFAFragment.binding?.kfaGreat,
@@ -71,6 +71,7 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         this.observeTodaysDurationFlowAndSetControls(
             weightAndKFAViewModel.getPastInformationFlow(
                 informationType.sleepduration,
+                true,
                 0,
                 activity
             ),
@@ -81,7 +82,7 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         )
 
         this.observeTodaysStringFlowAndSetControls(
-            weightAndKFAViewModel.getPastInformationFlow(informationType.information, 0, activity),
+            weightAndKFAViewModel.getPastInformationFlow(informationType.information, true, 0, activity),
             R.string.info,
             this@WeightKFAFragment.binding?.infoLabel
         )

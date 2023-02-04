@@ -105,51 +105,51 @@ object dataGate {
 
     fun getAFlow(
         informationType: informationType,
+        continous: Boolean,
         dateTime: LocalDateTime,
         fragementActivity: FragmentActivity? = null
     ): Flow<ArrayList<String>> {
         return flow<ArrayList<String>>
         {
-            /*
-            while (true) {
-            */
-            var firstResult = getAValue(
-                dateTime,
-                informationType,
-                dataStoreType.device,
-                arrayListOf(),
-                fragementActivity
-            )
-            emit(firstResult)
 
-            var secondResult = getAValue(
-                dateTime,
-                informationType,
-                dataStoreType.googleSheets,
-                arrayListOf(),
-                fragementActivity
-            )
-            emit(secondResult)
+            do {
 
-            if (arrayStringValuesChanged(firstResult, secondResult)) {
-                val anyArrayList = arrayListOf<Any>()
-                secondResult.forEach {
-                    anyArrayList.add(it)
-                }
-
-                val dataStoreDescription = dataStoreDescription(
-                    dataStoreType.device,
-                    informationType,
-                    anyArrayList,
+                var firstResult = getAValue(
                     dateTime,
+                    informationType,
+                    dataStoreType.device,
+                    arrayListOf(),
                     fragementActivity
                 )
+                emit(firstResult)
 
-                sendValue(dataStoreDescription)
-            }
-/*
+                var secondResult = getAValue(
+                    dateTime,
+                    informationType,
+                    dataStoreType.googleSheets,
+                    arrayListOf(),
+                    fragementActivity
+                )
+                emit(secondResult)
+
+                if (arrayStringValuesChanged(firstResult, secondResult)) {
+                    val anyArrayList = arrayListOf<Any>()
+                    secondResult.forEach {
+                        anyArrayList.add(it)
+                    }
+
+                    val dataStoreDescription = dataStoreDescription(
+                        dataStoreType.device,
+                        informationType,
+                        anyArrayList,
+                        dateTime,
+                        fragementActivity
+                    )
+
+                    sendValue(dataStoreDescription)
+                }
                 delay(1000)
-            }*/
+            } while (continous)
         }
     }
 

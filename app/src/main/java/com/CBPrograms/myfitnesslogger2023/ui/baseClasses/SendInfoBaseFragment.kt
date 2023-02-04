@@ -82,21 +82,22 @@ abstract class SendInfoBaseFragment : BaseFragment() {
         preCommaNumberPicker : NumberPicker?,
         pastCommaNumberPicker : NumberPicker?)
     {
-        GlobalScope.launch {
-            var todaysValue: Double? = null;
-            var yesterdaysValue: Double? = null;
+        var todaysValue: Double? = null;
+        var yesterdaysValue: Double? = null;
 
-            fun checkTodayYesterdayLabel() {
-                activity?.runOnUiThread {
-                    if (todaysValue != null && yesterdaysValue != null) {
+        fun checkTodayYesterdayLabel() {
+            activity?.runOnUiThread {
+                if (todaysValue != null && yesterdaysValue != null) {
 
-                        this@SendInfoBaseFragment.initializeALabel(
-                            aLabel,
-                            labelID,
-                            getYesterdaysTodaysValueInformation(todaysValue, yesterdaysValue))
-                    }
+                    this@SendInfoBaseFragment.initializeALabel(
+                        aLabel,
+                        labelID,
+                        getYesterdaysTodaysValueInformation(todaysValue, yesterdaysValue))
                 }
             }
+        }
+
+        GlobalScope.launch {
 
             todaysFlow.collect {
                 activity?.runOnUiThread {
@@ -112,7 +113,9 @@ abstract class SendInfoBaseFragment : BaseFragment() {
                     checkTodayYesterdayLabel()
                 }
             }
+        }
 
+        GlobalScope.launch {
             yesterdaysFlow.collect {
                 activity?.runOnUiThread {
                     yesterdaysValue = it.firstOrNull()?.toDoubleOrNull()
