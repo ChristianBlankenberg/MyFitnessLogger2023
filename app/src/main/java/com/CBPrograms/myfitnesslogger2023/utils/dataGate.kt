@@ -110,6 +110,9 @@ object dataGate {
     ): Flow<ArrayList<String>> {
         return flow<ArrayList<String>>
         {
+            /*
+            while (true) {
+            */
             var firstResult = getAValue(
                 dateTime,
                 informationType,
@@ -136,23 +139,29 @@ object dataGate {
 
                 val dataStoreDescription = dataStoreDescription(
                     dataStoreType.device,
-                    com.CBPrograms.myfitnesslogger2023.enumerations.informationType.weight,
+                    informationType,
                     anyArrayList,
                     dateTime,
                     fragementActivity
                 )
+
                 sendValue(dataStoreDescription)
             }
+/*
+                delay(1000)
+            }*/
         }
     }
 
 
-    fun getActivity(activity: com.CBPrograms.myfitnesslogger2023.enumerations.activityType,
-                    dateTime: LocalDateTime,
-                    fragementActivity: FragmentActivity?) : ArrayList<String> {
-    /*
-        return getAValue(dateTime, informationType.activity,   arrayListOf(),fragementActivity)
-    */
+    fun getActivity(
+        activity: com.CBPrograms.myfitnesslogger2023.enumerations.activityType,
+        dateTime: LocalDateTime,
+        fragementActivity: FragmentActivity?
+    ): ArrayList<String> {
+        /*
+            return getAValue(dateTime, informationType.activity,   arrayListOf(),fragementActivity)
+        */
 
         return arrayListOf()
     }

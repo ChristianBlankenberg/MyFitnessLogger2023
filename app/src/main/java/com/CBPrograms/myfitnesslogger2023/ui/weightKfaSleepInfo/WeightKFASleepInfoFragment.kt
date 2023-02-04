@@ -51,7 +51,7 @@ class WeightKFAFragment : SendInfoBaseFragment() {
 
     private fun initializeFlows() {
         this.observeTodaysYesterDaysDoubleFlowsAndSetControls(
-            weightAndKFAViewModel.getPastInformationFlow(informationType.weight,0, activity),
+            weightAndKFAViewModel.getPastInformationFlow(informationType.weight, 0, activity),
             weightAndKFAViewModel.getPastInformationFlow(informationType.weight, -1, activity),
             R.string.weight,
             this@WeightKFAFragment.binding?.weightLabel,
@@ -60,7 +60,7 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         )
 
         this.observeTodaysYesterDaysDoubleFlowsAndSetControls(
-            weightAndKFAViewModel.getPastInformationFlow(informationType.kfa,0, activity),
+            weightAndKFAViewModel.getPastInformationFlow(informationType.kfa, 0, activity),
             weightAndKFAViewModel.getPastInformationFlow(informationType.kfa, -1, activity),
             R.string.kfa,
             this@WeightKFAFragment.binding?.kfaLabel,
@@ -69,7 +69,11 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         )
 
         this.observeTodaysDurationFlowAndSetControls(
-            weightAndKFAViewModel.getPastInformationFlow(informationType.sleepduration, 0, activity),
+            weightAndKFAViewModel.getPastInformationFlow(
+                informationType.sleepduration,
+                0,
+                activity
+            ),
             R.string.sleepDuration,
             this@WeightKFAFragment.binding?.sleepDurationLabel,
             this@WeightKFAFragment.binding?.sleepDurationHours,
@@ -79,7 +83,8 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         this.observeTodaysStringFlowAndSetControls(
             weightAndKFAViewModel.getPastInformationFlow(informationType.information, 0, activity),
             R.string.info,
-            this@WeightKFAFragment.binding?.infoLabel)
+            this@WeightKFAFragment.binding?.infoLabel
+        )
     }
 
     override fun onDestroyView() {
@@ -120,7 +125,7 @@ class WeightKFAFragment : SendInfoBaseFragment() {
 
     private fun initializeNumberPickers() {
         xbinding.weightGreat.minValue = 72
-        xbinding.weightGreat.maxValue = 85
+        xbinding.weightGreat.maxValue = 105
         xbinding.weightGreat.value = 78
 
         xbinding.weightSmall.minValue = 0
