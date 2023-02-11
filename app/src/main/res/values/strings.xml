@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">My Fitness Logger 2023</string>
     <string name="title_weight_and_kfa">Weight &amp; KFA</string>
+    <string name="title_yesterDaysSteps_info">Y. Steps</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_sleep_and_info">Sleep &amp; Info</string>
     <string name="weight">Weight</string>
@@ -20,8 +21,6 @@
     <string name="send">Send</string>
 
     <string name="distance">Distance</string>
+    <string name="yesterdaysSteps">Yesterday Steps</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

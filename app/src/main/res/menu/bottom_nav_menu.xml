@@ -7,9 +7,9 @@
         android:title="@string/title_weight_and_kfa" />
 
     <item
-        android:id="@+id/navigation_sleep_and_info"
-        android:icon="@drawable/ic_sleep_svgrepo_com"
-        android:title="@string/title_sleep_and_info" />
+        android:id="@+id/navigation_yesterdaysSteps"
+        android:icon="@drawable/ic_steps"
+        android:title="@string/yesterdaysSteps" />
 
     <item
         android:id="@+id/navigation_activity"

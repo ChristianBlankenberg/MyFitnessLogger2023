@@ -39,19 +39,19 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         binding = FragmentWeightKfaSleepdurationInfoBinding.inflate(inflater, container, false)
         val root: View = xbinding.root
 
-        this.initialize(weightAndKFAViewModel, xbinding.SendButton, xbinding.circularProgress)
-
-        // initialize fragment controls
-        initializeNumberPickers()
-
-        initializeFlows()
-
         return root
     }
 
-    private fun initializeFlows() {
+    override fun initializeUI() {
+        // initialize fragment controls
+        this.initialize(weightAndKFAViewModel, xbinding.SendButton, xbinding.circularProgress)
+
+        this.initializeNumberPickers()
+    }
+
+    override fun initializeFlows() {
         this.observeTodaysYesterDaysDoubleFlowsAndSetControls(
-            weightAndKFAViewModel.getPastInformationFlow(informationType.weight, true,0, activity),
+            weightAndKFAViewModel.getPastInformationFlow(informationType.weight, false,0, activity),
             weightAndKFAViewModel.getPastInformationFlow(informationType.weight, false, -1, activity),
             R.string.weight,
             this@WeightKFAFragment.binding?.weightLabel,
@@ -60,7 +60,7 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         )
 
         this.observeTodaysYesterDaysDoubleFlowsAndSetControls(
-            weightAndKFAViewModel.getPastInformationFlow(informationType.kfa, true,0, activity),
+            weightAndKFAViewModel.getPastInformationFlow(informationType.kfa, false,0, activity),
             weightAndKFAViewModel.getPastInformationFlow(informationType.kfa, false, -1, activity),
             R.string.kfa,
             this@WeightKFAFragment.binding?.kfaLabel,
@@ -71,7 +71,7 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         this.observeTodaysDurationFlowAndSetControls(
             weightAndKFAViewModel.getPastInformationFlow(
                 informationType.sleepduration,
-                true,
+                false,
                 0,
                 activity
             ),
@@ -82,7 +82,7 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         )
 
         this.observeTodaysStringFlowAndSetControls(
-            weightAndKFAViewModel.getPastInformationFlow(informationType.information, true, 0, activity),
+            weightAndKFAViewModel.getPastInformationFlow(informationType.information, false, 0, activity),
             R.string.info,
             this@WeightKFAFragment.binding?.infoLabel
         )
@@ -91,9 +91,6 @@ class WeightKFAFragment : SendInfoBaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-    }
-
-    override fun reInitializeLabels() {
     }
 
     override fun sendPreAction() {
@@ -113,14 +110,13 @@ class WeightKFAFragment : SendInfoBaseFragment() {
             xbinding.kfaGreat.value,
             xbinding.kfaSmall.value,
             xbinding.kfaSmall.isVisible,
-            activity
-        )
+            activity)
 
         weightAndKFAViewModel.sendSleepDuration(
             xbinding.sleepDurationHours.value,
             xbinding.sleepDurationMinutes.value,
-            activity
-        )
+            activity)
+
         weightAndKFAViewModel.sendInformation(xbinding.infoTextInput.text.toString(), activity)
     }
 

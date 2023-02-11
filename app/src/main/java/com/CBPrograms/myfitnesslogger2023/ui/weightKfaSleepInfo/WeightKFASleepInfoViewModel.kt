@@ -44,9 +44,6 @@ class WeightKFASleepInfoViewModel : SendInfoBaseViewModel() {
         return dataGate.getKFA(LocalDateTime.now().plusDays(deltaDays.toLong()), fragmentActivity)
     }
 */
-    fun getPastInformationFlow(informationType : informationType, continous : Boolean, deltaDays: Int, fragmentActivity : FragmentActivity? = null): Flow<ArrayList<String>> {
-        return dataGate.getAFlow(informationType, continous, LocalDateTime.now().plusDays(deltaDays.toLong()), fragmentActivity)
-    }
 /*
     fun getTodaysSleepDurationMinutes(fragementActivity: FragmentActivity? = null): String {
         val sleepDurationMinutes = dataGate.getSleepDurationMinutes(LocalDateTime.now(), fragementActivity)

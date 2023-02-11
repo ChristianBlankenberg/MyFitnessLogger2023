@@ -62,6 +62,21 @@ object dataGate {
         }
     }
 
+    fun sendSteps(steps: Int,
+                  dateTime: LocalDateTime,
+                  fragementActivity: FragmentActivity? = null) {
+        val dataStoreDescriptions = getDataStoreDescriptions(
+            informationType.steps,
+            arrayListOf(steps),
+            dateTime,
+            fragementActivity
+        )
+        for (dataStoreDescription in dataStoreDescriptions) {
+            sendValue(dataStoreDescription)
+        }
+    }
+
+
     fun sendInformation(
         information: String,
         dateTime: LocalDateTime,

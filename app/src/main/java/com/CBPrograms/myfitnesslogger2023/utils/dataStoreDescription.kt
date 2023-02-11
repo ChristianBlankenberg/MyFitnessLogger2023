@@ -71,6 +71,7 @@ class dataStoreDescription(
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.kfa,
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.sleepduration,
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.information -> googleSheetType.dataSheet
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.steps,
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity -> googleSheetType.activitySheet
             else -> googleSheetType.unknown
         }
@@ -94,7 +95,9 @@ class dataStoreDescription(
                     else -> arrayListOf()
                 }
             }
-            else -> arrayListOf<Int>()
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.steps -> arrayListOf(2)
+
+                else -> arrayListOf<Int>()
         }
     }
 
@@ -176,7 +179,8 @@ class dataStoreDescription(
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.weight,
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.kfa,
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.sleepduration,
-            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.information ->
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.information,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.steps ->
                 arrayListOf(
                     hashMapOf<String, Any>(
                         "date" to this.dateTime,

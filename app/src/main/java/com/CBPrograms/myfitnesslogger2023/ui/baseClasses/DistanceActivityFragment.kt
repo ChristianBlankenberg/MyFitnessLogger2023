@@ -32,7 +32,7 @@ abstract class DistanceActivityFragment : TabulatorChildFragment() {
     }
 
     abstract fun getReinitializeLabels() : Triple<TextView? , TextView?, TextView?>;
-
+/*
     override fun reInitializeLabels() {
         GlobalScope.launch {
             val reinitializeLabels = getReinitializeLabels()
@@ -110,5 +110,5 @@ abstract class DistanceActivityFragment : TabulatorChildFragment() {
             }*/
         }
     }
-
+*/
 }

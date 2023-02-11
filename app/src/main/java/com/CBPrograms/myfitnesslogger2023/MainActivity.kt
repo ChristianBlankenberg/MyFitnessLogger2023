@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 com.CBPrograms.myfitnesslogger2023.R.id.navigation_weight_and_kfa,
-                com.CBPrograms.myfitnesslogger2023.R.id.navigation_sleep_and_info,
+                com.CBPrograms.myfitnesslogger2023.R.id.navigation_yesterdaysSteps,
                 com.CBPrograms.myfitnesslogger2023.R.id.navigation_activity,
                 com.CBPrograms.myfitnesslogger2023.R.id.navigation_dashboard
             )

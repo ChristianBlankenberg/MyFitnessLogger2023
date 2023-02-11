@@ -65,4 +65,11 @@ class JoggingFragment : DistanceActivityFragment() {
 
         return root
     }
+
+    override fun initializeUI() {
+    }
+
+    override fun initializeFlows() {
+    }
+
 }

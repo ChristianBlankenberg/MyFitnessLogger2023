@@ -2,6 +2,7 @@ package com.CBPrograms.myfitnesslogger2023.ui.baseClasses
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -19,6 +20,12 @@ abstract class SendInfoBaseFragment : BaseFragment() {
     private lateinit var viewModel: SendInfoBaseViewModel
     private var sendButton: Button? = null
     private var circularProgressIndicator: CircularProgressIndicator? = null
+
+    override fun onStart() {
+        this.initializeUI()
+        this.initializeFlows()
+        super.onStart()
+    }
 
     fun initialize(
         viewModel: SendInfoBaseViewModel,
@@ -94,6 +101,12 @@ abstract class SendInfoBaseFragment : BaseFragment() {
                         labelID,
                         getYesterdaysTodaysValueInformation(todaysValue, yesterdaysValue))
                 }
+                else if (todaysValue != null && yesterdaysValue == null) {
+                    this@SendInfoBaseFragment.initializeALabel(
+                        aLabel,
+                        labelID,
+                        todaysValue.toString())
+                }
             }
         }
 
@@ -120,6 +133,27 @@ abstract class SendInfoBaseFragment : BaseFragment() {
                 activity?.runOnUiThread {
                     yesterdaysValue = it.firstOrNull()?.toDoubleOrNull()
                     checkTodayYesterdayLabel()
+                }
+            }
+        }
+    }
+
+    protected fun observeYesterdaysIntFlowAndSetControls(
+        yesterdaysFlow : Flow<ArrayList<String>>,
+        labelID: Int,
+        aLabel: TextView?,
+        valueNp : NumberPicker?) {
+        GlobalScope.launch {
+            yesterdaysFlow.collect {
+                activity?.runOnUiThread {
+                    val intValue = it.firstOrNull()?.toIntOrNull() ?: 0
+
+                    valueNp?.value = intValue ?: 0
+
+                    this@SendInfoBaseFragment.initializeALabel(
+                        aLabel,
+                        labelID,
+                        intValue.toString())
                 }
             }
         }
@@ -208,7 +242,6 @@ abstract class SendInfoBaseFragment : BaseFragment() {
         super.onResume()
 
         try {
-            this.reInitializeLabels()
         } catch (e: Exception) {
         }
 
@@ -224,6 +257,7 @@ abstract class SendInfoBaseFragment : BaseFragment() {
 
             GlobalScope.launch {
                 activity?.runOnUiThread {
+                    this@SendInfoBaseFragment.sendButton?.isEnabled = false
                     this@SendInfoBaseFragment.circularProgressIndicator?.visibility = View.VISIBLE
                 }
 
@@ -231,7 +265,6 @@ abstract class SendInfoBaseFragment : BaseFragment() {
 
                 activity?.runOnUiThread {
                     this@SendInfoBaseFragment.circularProgressIndicator?.visibility = View.INVISIBLE
-                    this@SendInfoBaseFragment.reInitializeLabels()
                     this@SendInfoBaseFragment.sendButton?.isEnabled = true
                 }
             }
@@ -242,5 +275,7 @@ abstract class SendInfoBaseFragment : BaseFragment() {
 
     abstract fun sendAction();
 
-    abstract fun reInitializeLabels();
+    abstract fun initializeUI();
+
+    abstract fun initializeFlows();
 }
