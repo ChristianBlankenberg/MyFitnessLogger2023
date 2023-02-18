@@ -7,6 +7,11 @@ enum class informationType {
     kfa,
     sleepduration,
     information,
-    activity,
+    activityTime,
+    activityCalories,
+    activityDistanceCycling,
+    activityDistanceJogging,
+    activityDistanceHiking,
+    activityCaloriesWorkout,
     steps
 }

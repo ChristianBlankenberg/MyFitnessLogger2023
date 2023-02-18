@@ -11,30 +11,6 @@ import java.time.LocalDateTime
 
 class WeightKFASleepInfoViewModel : SendInfoBaseViewModel() {
 
-    //region Send functions
-    fun sendData(
-        weightGreat : Int,
-        weightSmall : Int,
-        kfaGreat : Int,
-        kfaSmall : Int,
-        hasKFAValue : Boolean,
-        fragmentActivity : FragmentActivity? = null)
-    {
-        dataGate.sendWeight(weightGreat + weightSmall / 10.0, LocalDateTime.now(), fragmentActivity)
-        if (hasKFAValue)
-        {
-            dataGate.sendKFA(kfaGreat + kfaSmall / 10.0, LocalDateTime.now(), fragmentActivity)
-        }
-    }
-
-    fun sendInformation(information : String, fragementActivity: FragmentActivity? = null) {
-        dataGate.sendInformation(information, LocalDateTime.now(), fragementActivity)
-    }
-
-    fun sendSleepDuration(hours: Int, minutes: Int, fragementActivity: FragmentActivity? = null) {
-        dataGate.sendSleepDuration(hours * 60 + minutes, LocalDateTime.now(), fragementActivity)
-    }
-
     //endregion
 
     //region Get functions

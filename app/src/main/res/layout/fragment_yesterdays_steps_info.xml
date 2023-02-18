@@ -31,12 +31,6 @@
                 android:layout_height="wrap_content" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <Button
-            android:id="@+id/SendButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Send" />
-
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/circularProgress"
             android:layout_width="match_parent"
@@ -44,6 +38,12 @@
             android:layout_gravity="center_horizontal"
             android:indeterminate="true"
             android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/SendButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

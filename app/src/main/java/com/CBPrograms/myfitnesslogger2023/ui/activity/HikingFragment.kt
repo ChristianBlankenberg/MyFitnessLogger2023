@@ -9,9 +9,8 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.CBPrograms.myfitnesslogger2023.R
 import com.CBPrograms.myfitnesslogger2023.databinding.FragmentHikingBinding
-import com.CBPrograms.myfitnesslogger2023.ui.baseClasses.DistanceActivityFragment
 
-class HikingFragment : DistanceActivityFragment() {
+class HikingFragment : TabulatorChildFragment() {
 
     private var binding: FragmentHikingBinding? = null
 
@@ -23,19 +22,15 @@ class HikingFragment : DistanceActivityFragment() {
         return contextRef?.resources?.getText(R.string.hiking).toString()
     }
 
-    override fun getReinitializeLabels() : Triple<TextView?, TextView?, TextView?>
-    {
-        return Triple(xbinding.distanceLabel, xbinding.durationLabel, xbinding.caloriesLabel)
+    override fun sendPreAction() {
+        xbinding.distanceKm.clearFocus()
+        xbinding.distancem.clearFocus()
+        xbinding.durationHr.clearFocus()
+        xbinding.durationMin.clearFocus()
+        xbinding.caloriesNP.clearFocus()
     }
 
-    override fun getNumberPickerDataControls() : ArrayList<NumberPicker?>
-    {
-        return arrayListOf(
-            xbinding.distanceKm,
-            xbinding.distancem,
-            xbinding.durationHr,
-            xbinding.durationMin,
-            xbinding.caloriesNP)
+    override fun sendAction() {
     }
 
     override fun onCreateView(
@@ -55,12 +50,7 @@ class HikingFragment : DistanceActivityFragment() {
             distancekmMax = 100,
             durationHrMax = 24,
             25,
-            5
-        )
-
-        sendActivityBaseViewModel = ViewModelProvider(this).get(HikingViewModel::class.java)
-
-        initialize(sendActivityBaseViewModel, binding?.SendButton, binding?.circularProgress)
+            5)
 
         return root
     }

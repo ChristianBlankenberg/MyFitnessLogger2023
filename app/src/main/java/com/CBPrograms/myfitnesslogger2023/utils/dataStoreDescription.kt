@@ -72,7 +72,12 @@ class dataStoreDescription(
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.sleepduration,
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.information -> googleSheetType.dataSheet
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.steps,
-            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity -> googleSheetType.activitySheet
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityTime,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityCalories,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityDistanceCycling,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityDistanceJogging,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityDistanceHiking,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityCaloriesWorkout -> googleSheetType.activitySheet
             else -> googleSheetType.unknown
         }
     }
@@ -85,7 +90,7 @@ class dataStoreDescription(
                 4
             )
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.information -> arrayListOf<Int>(5)
-            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity -> {
+          /*  com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity -> {
                 return when(getActivityType())
                 {
                     com.CBPrograms.myfitnesslogger2023.enumerations.activityType.jogging -> arrayListOf(3, 4, 9)
@@ -94,7 +99,13 @@ class dataStoreDescription(
                     com.CBPrograms.myfitnesslogger2023.enumerations.activityType.workout ->  arrayListOf(3, 4, 12)
                     else -> arrayListOf()
                 }
-            }
+            }*/
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityTime -> arrayListOf(3)
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityCalories -> arrayListOf(4)
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityDistanceCycling -> arrayListOf(10)
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityDistanceJogging -> arrayListOf(9)
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityDistanceHiking -> arrayListOf(11)
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityCaloriesWorkout -> arrayListOf(12)
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.steps -> arrayListOf(2)
 
                 else -> arrayListOf<Int>()
@@ -106,7 +117,7 @@ class dataStoreDescription(
     }
 
     private fun getValueStrings(): ArrayList<String> {
-        return if (informationType == com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity) {
+       /* return if (informationType == com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity) {
             if (getActivityType() == com.CBPrograms.myfitnesslogger2023.enumerations.activityType.workout)
             {
                 arrayListOf(
@@ -123,7 +134,8 @@ class dataStoreDescription(
             }
         } else {
             arrayListOf(getValueString(this.firstValue().toString()))
-        }
+        }*/
+        return arrayListOf(getValueString(this.firstValue().toString()))
     }
 
     private fun getValueString(list : ArrayList<Any>, idx : Int) : String
@@ -158,7 +170,7 @@ class dataStoreDescription(
     }
 
     private fun getKeys(): ArrayList<String> {
-        if (this.informationType == com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity) {
+       /* if (this.informationType == com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity) {
             //ToDo
             return arrayListOf(
                 "activityDuration" + this.getRow().toString(),
@@ -167,7 +179,8 @@ class dataStoreDescription(
             )
         } else {
             return arrayListOf(this.informationType.toString() + this.getRow().toString())
-        }
+        }*/
+        return arrayListOf(this.informationType.toString() + this.getRow().toString())
     }
 
     private fun getCollection(): String {
@@ -180,7 +193,13 @@ class dataStoreDescription(
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.kfa,
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.sleepduration,
             com.CBPrograms.myfitnesslogger2023.enumerations.informationType.information,
-            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.steps ->
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.steps,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityTime,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityCalories,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityDistanceCycling,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityDistanceJogging,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityDistanceHiking,
+            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activityCaloriesWorkout ->
                 arrayListOf(
                     hashMapOf<String, Any>(
                         "date" to this.dateTime,
@@ -190,7 +209,7 @@ class dataStoreDescription(
                         "database" to this.getDatabase()
                     )
                 )
-            com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity -> {
+           /* com.CBPrograms.myfitnesslogger2023.enumerations.informationType.activity -> {
                 val result = arrayListOf<HashMap<String, Any>>()
 
                 values.forEach {
@@ -206,7 +225,7 @@ class dataStoreDescription(
                 }
 
                 return result;
-            }
+            }*/
             else -> arrayListOf(hashMapOf<String, Any>())
         }
     }

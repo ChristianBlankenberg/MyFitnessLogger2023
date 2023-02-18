@@ -2,6 +2,11 @@ package com.CBPrograms.myfitnesslogger2023.utils
 
 object mathFunctions {
 
+    fun getDoubleValue(preCommaValue : Int, pastCommaValue : Int) : Double
+    {
+        return preCommaValue.toDouble() + pastCommaValue.toDouble() / 10.0
+    }
+
     fun getPreAndPastCommaValue(number : Double) : Pair<Int, Int>
     {
         val preCommaValue = number.toInt()
@@ -15,5 +20,9 @@ object mathFunctions {
         val minutes = "%02d".format (minutes - hours * 60)
 
         return Pair((hours).toString(), minutes)
+    }
+
+    fun getMinutes(hours: Int, minutes: Int): Int {
+        return hours * 60 + minutes
     }
 }

@@ -13,8 +13,7 @@ abstract class ActivitySendInfoBaseFragment() : SendInfoBaseFragment() {
         distancekmMax : Int,
         durationHrMax : Int,
         defaultValueDistance : Int,
-        defaultValueDurationHr : Int
-        )
+        defaultValueDurationHr : Int)
     {
         distanceKmNP.minValue = 0
         distanceKmNP.maxValue = distancekmMax

@@ -4,23 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.NumberPicker
-import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.CBPrograms.myfitnesslogger2023.ui.baseClasses.SendInfoBaseFragment
-import com.CBPrograms.myfitnesslogger2023.utils.mathFunctions
-import com.CBPrograms.myfitnesslogger2023.R
 import com.CBPrograms.myfitnesslogger2023.databinding.FragmentWeightKfaSleepdurationInfoBinding
-import com.CBPrograms.myfitnesslogger2023.enumerations.informationType
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import java.lang.Math.abs
+import com.CBPrograms.myfitnesslogger2023.ui.activity.*
+import com.CBPrograms.myfitnesslogger2023.ui.baseClasses.BaseFragment
 
-class WeightKFAFragment : SendInfoBaseFragment() {
+class WeightKFASleepInfoFragment : BaseFragment() {
 
-    private lateinit var weightAndKFAViewModel: WeightKFASleepInfoViewModel
+    private lateinit var weightKFASleepInfoViewModel: WeightKFASleepInfoViewModel
     private var binding: FragmentWeightKfaSleepdurationInfoBinding? = null
 
     // This property is only valid between onCreateView and
@@ -32,16 +23,32 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        weightAndKFAViewModel =
+        weightKFASleepInfoViewModel =
             ViewModelProvider(this).get(WeightKFASleepInfoViewModel::class.java)
-        weightAndKFAViewModel.initialize(this.requireActivity());
+        weightKFASleepInfoViewModel.initialize(this.requireActivity());
 
         binding = FragmentWeightKfaSleepdurationInfoBinding.inflate(inflater, container, false)
         val root: View = xbinding.root
 
+        this.initializeTabulatorViewControls()
+
         return root
     }
 
+    private fun initializeTabulatorViewControls()
+    {
+        val myFragmentPagerAdapter = TabulatorFragmentPageAdapter(requireContext(), childFragmentManager)
+
+        val context = requireContext()
+        myFragmentPagerAdapter.addFragment(WeightKFAFragment(), context)
+        myFragmentPagerAdapter.addFragment(SleepDurationFragment(), context)
+        myFragmentPagerAdapter.addFragment(InfoFragment(), context)
+
+        xbinding.weightKfaSleepInfoTabs.setupWithViewPager(xbinding.weightKfaSleepInfoView)
+        xbinding.weightKfaSleepInfoView.adapter = myFragmentPagerAdapter
+    }
+
+/*
     override fun initializeUI() {
         // initialize fragment controls
         this.initialize(weightAndKFAViewModel, xbinding.SendButton, xbinding.circularProgress)
@@ -120,6 +127,10 @@ class WeightKFAFragment : SendInfoBaseFragment() {
         weightAndKFAViewModel.sendInformation(xbinding.infoTextInput.text.toString(), activity)
     }
 
+    override fun sendPostAction() {
+        initializeFlows()
+    }
+
     private fun initializeNumberPickers() {
         xbinding.weightGreat.minValue = 72
         xbinding.weightGreat.maxValue = 105
@@ -139,6 +150,6 @@ class WeightKFAFragment : SendInfoBaseFragment() {
 
         initializeDurationNumberPickers(xbinding.sleepDurationHours, xbinding.sleepDurationMinutes)
     }
+ */
+
 }
-
-

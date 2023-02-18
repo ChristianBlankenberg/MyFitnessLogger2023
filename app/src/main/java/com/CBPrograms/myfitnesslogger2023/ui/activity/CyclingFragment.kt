@@ -6,16 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.NumberPicker
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.CBPrograms.myfitnesslogger2023.R
 import com.CBPrograms.myfitnesslogger2023.databinding.FragmentCyclingBinding
-import com.CBPrograms.myfitnesslogger2023.ui.baseClasses.DistanceActivityFragment
+import com.CBPrograms.myfitnesslogger2023.enumerations.informationType
+import com.CBPrograms.myfitnesslogger2023.ui.weightKfaSleepInfo.InfoViewModel
 import com.CBPrograms.myfitnesslogger2023.utils.mathFunctions
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
-class CyclingFragment : DistanceActivityFragment() {
+class CyclingFragment : TabulatorChildFragment() {
 
+    private lateinit var cyclingViewModel: CyclingViewModel
     private var binding: FragmentCyclingBinding? = null
 
     // This property is only valid between onCreateView and
@@ -26,28 +30,52 @@ class CyclingFragment : DistanceActivityFragment() {
         return contextRef?.resources?.getText(R.string.cycling).toString()
     }
 
-    override fun getReinitializeLabels() : Triple<TextView, TextView, TextView>
-    {
-        return Triple(xbinding.distanceLabel, xbinding.durationLabel, xbinding.caloriesLabel)
+    override fun sendPreAction() {
+        xbinding.distanceKm.clearFocus()
+        xbinding.distancem.clearFocus()
+        xbinding.durationHr.clearFocus()
+        xbinding.durationMin.clearFocus()
+        xbinding.caloriesNP.clearFocus()
     }
 
-    override fun getNumberPickerDataControls() : ArrayList<NumberPicker?>
-    {
-        return arrayListOf(
-            xbinding.distanceKm,
-            xbinding.distancem,
-            xbinding.durationHr,
-            xbinding.durationMin,
-            xbinding.caloriesNP)
+    override fun sendAction() {
+        cyclingViewModel.sendActivityDistance(
+            mathFunctions.getDoubleValue(
+                xbinding.distanceKm.value,
+                xbinding.distancem.value
+            ), activity
+        )
+
+        cyclingViewModel.sendActivityDuration(
+            mathFunctions.getMinutes(
+                xbinding.durationHr.value,
+                xbinding.durationMin.value
+            ), activity
+        )
+
+        cyclingViewModel.sendActivityCalories(
+            xbinding.caloriesNP.value, activity
+        )
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        cyclingViewModel =
+            ViewModelProvider(this).get(CyclingViewModel::class.java)
+        cyclingViewModel.initialize(this.requireActivity());
+
         // Inflate the layout for this fragment
         binding = FragmentCyclingBinding.inflate(inflater, container, false)
         val root: View = xbinding.root
+
+        return root
+    }
+
+    override fun initializeUI() {
+        // initialize fragment controls
+        this.initialize(cyclingViewModel, xbinding.SendButton, xbinding.circularProgress)
 
         initializeDistanceActivityControls(
             distanceKmNP = xbinding.distanceKm,
@@ -60,17 +88,42 @@ class CyclingFragment : DistanceActivityFragment() {
             30,
             1
         )
-
-        sendActivityBaseViewModel = ViewModelProvider(this).get(CyclingViewModel::class.java)
-
-        initialize(sendActivityBaseViewModel, binding?.SendButton, binding?.circularProgress)
-
-        return root
-    }
-
-    override fun initializeUI() {
     }
 
     override fun initializeFlows() {
+
+        this.observeTodaysDurationFlowAndSetControls(
+            cyclingViewModel.getPastInformationFlow(
+                informationType.activityTime,
+                false,
+                0,
+                activity),
+            R.string.duration,
+            this@CyclingFragment.binding?.durationLabel,
+            this@CyclingFragment.binding?.durationHr,
+            this@CyclingFragment.binding?.durationMin
+        )
+
+        this.observeTodaysDoubleFlowsAndSetControls(
+            cyclingViewModel.getPastInformationFlow(
+                    informationType.activityDistanceCycling,
+                false,
+                0,
+                activity),
+            R.string.distance,
+            this@CyclingFragment.binding?.distanceLabel,
+            this@CyclingFragment.binding?.distanceKm,
+            this@CyclingFragment.binding?.distancem)
+
+        this.observeTodaysDoubleFlowsAndSetControls(
+            cyclingViewModel.getPastInformationFlow(
+                informationType.activityCalories,
+                false,
+                0,
+                activity),
+            R.string.calories,
+            this@CyclingFragment.binding?.caloriesLabel,
+            this@CyclingFragment.binding?.caloriesNP,
+            null)
     }
 }

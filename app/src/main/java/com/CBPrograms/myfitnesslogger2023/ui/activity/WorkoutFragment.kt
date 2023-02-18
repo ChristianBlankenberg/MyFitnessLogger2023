@@ -9,9 +9,8 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.CBPrograms.myfitnesslogger2023.R
 import com.CBPrograms.myfitnesslogger2023.databinding.FragmentWorkoutBinding
-import com.CBPrograms.myfitnesslogger2023.ui.baseClasses.DistanceActivityFragment
 
-class WorkoutFragment : DistanceActivityFragment() {
+class WorkoutFragment : TabulatorChildFragment() {
 
     private var binding: FragmentWorkoutBinding? = null
 
@@ -23,19 +22,13 @@ class WorkoutFragment : DistanceActivityFragment() {
         return contextRef?.resources?.getText(R.string.workout).toString()
     }
 
-    override fun getReinitializeLabels() : Triple<TextView?, TextView?, TextView?>
-    {
-        return Triple(null, xbinding.durationLabel, xbinding.caloriesLabel)
+    override fun sendPreAction() {
+        xbinding.durationHr.clearFocus()
+        xbinding.durationMin.clearFocus()
+        xbinding.caloriesNP.clearFocus()
     }
 
-    override fun getNumberPickerDataControls() : ArrayList<NumberPicker?>
-    {
-        return arrayListOf(
-            null,
-            null,
-            xbinding.durationHr,
-            xbinding.durationMin,
-            xbinding.caloriesNP)
+    override fun sendAction() {
     }
 
     override fun onCreateView(
@@ -53,10 +46,6 @@ class WorkoutFragment : DistanceActivityFragment() {
             5,
             1
         )
-
-        sendActivityBaseViewModel = ViewModelProvider(this).get(WorkoutViewModel::class.java)
-
-        initialize(sendActivityBaseViewModel, binding?.SendButton, binding?.circularProgress)
 
         return root
     }

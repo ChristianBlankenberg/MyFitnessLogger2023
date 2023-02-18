@@ -3,6 +3,7 @@ import com.CBPrograms.myfitnesslogger2023.businesslogic.httpRequestService
 import androidx.fragment.app.FragmentActivity
 import com.CBPrograms.myfitnesslogger2023.businesslogic.sharedPrefGate
 import com.CBPrograms.myfitnesslogger2023.businesslogic.sharedPrefGate.getValue
+import com.CBPrograms.myfitnesslogger2023.enumerations.activityType
 import com.CBPrograms.myfitnesslogger2023.enumerations.comparisonType
 import com.CBPrograms.myfitnesslogger2023.utils.dataStoreDescription
 import com.CBPrograms.myfitnesslogger2023.enumerations.dataStoreType
@@ -76,7 +77,6 @@ object dataGate {
         }
     }
 
-
     fun sendInformation(
         information: String,
         dateTime: LocalDateTime,
@@ -93,22 +93,78 @@ object dataGate {
         }
     }
 
-    fun sendActivity(
-        activity: com.CBPrograms.myfitnesslogger2023.enumerations.activityType,
+    fun sendActivityDistance(
+        activity: activityType,
         distance: Double,
+        dateTime: LocalDateTime,
+        fragementActivity: FragmentActivity?) {
+
+        var distanceInformationType = when(activity)
+        {
+            activityType.jogging -> informationType.activityDistanceJogging
+            activityType.cycling -> informationType.activityDistanceCycling
+            activityType.hiking -> informationType.activityDistanceHiking
+            activityType.workout -> null
+            else -> null
+        }
+
+        if (distanceInformationType != null)
+        {
+            val dataStoreDescriptions = getDataStoreDescriptions(
+                distanceInformationType,
+                arrayListOf(distance),
+                dateTime,
+                fragementActivity
+            )
+
+            for (dataStoreDescription in dataStoreDescriptions) {
+                sendValue(dataStoreDescription)
+            }
+        }
+    }
+
+    fun sendActivityDuration(
         minutes: Int,
+        dateTime: LocalDateTime,
+        fragementActivity: FragmentActivity?
+    ) {
+        var dataStoreDescriptions = getDataStoreDescriptions(
+            informationType.activityTime,
+            arrayListOf(minutes),
+            dateTime,
+            fragementActivity
+        )
+
+        for (dataStoreDescription in dataStoreDescriptions) {
+            sendValue(dataStoreDescription)
+        }
+    }
+
+    fun sendActivityCalories(
+        calories: Int,
+        dateTime: LocalDateTime,
+        fragementActivity: FragmentActivity?
+    ) {
+       val dataStoreDescriptions = getDataStoreDescriptions(
+            informationType.activityCalories,
+            arrayListOf(calories),
+            dateTime,
+            fragementActivity
+        )
+
+        for (dataStoreDescription in dataStoreDescriptions) {
+            sendValue(dataStoreDescription)
+        }
+    }
+
+    fun sendActivityWorkoutCalories(
         calories: Int,
         dateTime: LocalDateTime,
         fragementActivity: FragmentActivity?
     ) {
         val dataStoreDescriptions = getDataStoreDescriptions(
-            informationType.activity,
-            arrayListOf(
-                activity,
-                minutes,
-                calories,
-                distance
-            ),
+            informationType.activityCaloriesWorkout,
+            arrayListOf(calories),
             dateTime,
             fragementActivity
         )

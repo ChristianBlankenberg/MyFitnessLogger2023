@@ -138,6 +138,44 @@ abstract class SendInfoBaseFragment : BaseFragment() {
         }
     }
 
+    protected fun observeTodaysDoubleFlowsAndSetControls(
+        todaysFlow : Flow<ArrayList<String>>,
+        labelID: Int,
+        aLabel: TextView?,
+        preCommaNumberPicker : NumberPicker?,
+        pastCommaNumberPicker : NumberPicker?)
+    {
+        GlobalScope.launch {
+
+            todaysFlow.collect {
+                activity?.runOnUiThread {
+                    val todaysValue = it.firstOrNull()
+
+                    this@SendInfoBaseFragment.initializeALabel(
+                        aLabel,
+                        labelID,
+                        todaysValue ?: "?")
+
+                    if (preCommaNumberPicker != null && pastCommaNumberPicker != null) {
+                        val todaysWeightPreAndPastComma =
+                            mathFunctions.getPreAndPastCommaValue(todaysValue?.toDoubleOrNull() ?: 0.0)
+
+                        todaysWeightPreAndPastComma!!.first
+                        pastCommaNumberPicker?.value =
+                            todaysWeightPreAndPastComma!!.second
+
+                        preCommaNumberPicker?.value = todaysWeightPreAndPastComma.first
+                        pastCommaNumberPicker?.value = todaysWeightPreAndPastComma.second
+                    }
+                    else if (preCommaNumberPicker != null && pastCommaNumberPicker == null)
+                    {
+                        preCommaNumberPicker?.value = todaysValue?.toIntOrNull() ?: 0
+                    }
+                }
+            }
+        }
+    }
+
     protected fun observeYesterdaysIntFlowAndSetControls(
         yesterdaysFlow : Flow<ArrayList<String>>,
         labelID: Int,
@@ -211,7 +249,6 @@ abstract class SendInfoBaseFragment : BaseFragment() {
         }
     }
 
-
     protected fun initializeALabel(aLabel: TextView?, labelID: Int, todaysValue: String) {
         if (aLabel != null) {
             if (todaysValue == "") {
@@ -267,6 +304,8 @@ abstract class SendInfoBaseFragment : BaseFragment() {
                     this@SendInfoBaseFragment.circularProgressIndicator?.visibility = View.INVISIBLE
                     this@SendInfoBaseFragment.sendButton?.isEnabled = true
                 }
+
+                initializeFlows()
             }
         }
     }
