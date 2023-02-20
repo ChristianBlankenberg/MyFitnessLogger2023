@@ -62,8 +62,7 @@ class CyclingFragment : TabulatorChildFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        cyclingViewModel =
-            ViewModelProvider(this).get(CyclingViewModel::class.java)
+        cyclingViewModel = ViewModelProvider(this).get(CyclingViewModel::class.java)
         cyclingViewModel.initialize(this.requireActivity());
 
         // Inflate the layout for this fragment
@@ -91,13 +90,13 @@ class CyclingFragment : TabulatorChildFragment() {
     }
 
     override fun initializeFlows() {
-
         this.observeTodaysDurationFlowAndSetControls(
             cyclingViewModel.getPastInformationFlow(
                 informationType.activityTime,
                 false,
                 0,
-                activity),
+                activity
+            ),
             R.string.duration,
             this@CyclingFragment.binding?.durationLabel,
             this@CyclingFragment.binding?.durationHr,
@@ -106,24 +105,28 @@ class CyclingFragment : TabulatorChildFragment() {
 
         this.observeTodaysDoubleFlowsAndSetControls(
             cyclingViewModel.getPastInformationFlow(
-                    informationType.activityDistanceCycling,
+                informationType.activityDistanceCycling,
                 false,
                 0,
-                activity),
+                activity
+            ),
             R.string.distance,
             this@CyclingFragment.binding?.distanceLabel,
             this@CyclingFragment.binding?.distanceKm,
-            this@CyclingFragment.binding?.distancem)
+            this@CyclingFragment.binding?.distancem
+        )
 
         this.observeTodaysDoubleFlowsAndSetControls(
             cyclingViewModel.getPastInformationFlow(
                 informationType.activityCalories,
                 false,
                 0,
-                activity),
+                activity
+            ),
             R.string.calories,
             this@CyclingFragment.binding?.caloriesLabel,
             this@CyclingFragment.binding?.caloriesNP,
-            null)
+            null
+        )
     }
 }

@@ -4,7 +4,13 @@ object mathFunctions {
 
     fun getDoubleValue(preCommaValue : Int, pastCommaValue : Int) : Double
     {
-        return preCommaValue.toDouble() + pastCommaValue.toDouble() / 10.0
+        var pastCommaDoubleValue : Double = pastCommaValue * 1.0
+        while(pastCommaDoubleValue > 1.0)
+        {
+            pastCommaDoubleValue = pastCommaDoubleValue.div(10.0)
+        }
+
+        return preCommaValue.toDouble() + pastCommaDoubleValue
     }
 
     fun getPreAndPastCommaValue(number : Double) : Pair<Int, Int>

@@ -4,5 +4,5 @@ import com.CBPrograms.myfitnesslogger2023.enumerations.activityType
 import com.CBPrograms.myfitnesslogger2023.ui.baseClasses.SendInfoBaseViewModel
 import java.time.LocalDateTime
 
-class CyclingViewModel : SendActivityBaseViewModel(com.CBPrograms.myfitnesslogger2023.enumerations.activityType.cycling) {
+class CyclingViewModel : SendActivityBaseViewModel(activityType.cycling) {
 }
