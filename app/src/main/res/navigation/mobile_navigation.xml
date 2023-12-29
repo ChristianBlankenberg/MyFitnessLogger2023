@@ -3,30 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_weight_and_kfa">
+    app:startDestination="@+id/navigation_weightAndKFA">
 
     <fragment
-        android:id="@+id/navigation_weight_and_kfa"
-        android:name="com.CBPrograms.myfitnesslogger2023.ui.weightKfaSleepInfo.WeightKFASleepInfoFragment"
-        android:label="@string/title_weight_and_kfa"
-        tools:layout="@layout/fragment_weight_kfa_sleepduration_info" />
+        android:id="@+id/navigation_weightAndKFA"
+        android:name="com.example.myfitnesslogger.ui.fragments.WeightAndKFAFragment"
+        android:label="@string/WeightAndKFA"
+        tools:layout="@layout/weightkfa_fragment" />
 
     <fragment
-        android:id="@+id/navigation_yesterdaysSteps"
-        android:name="com.CBPrograms.myfitnesslogger2023.ui.yesterdaysStepsInfo.YesterdaysStepsInfoFragment"
-        android:label="@string/title_yesterDaysSteps_info"
-        tools:layout="@layout/fragment_yesterdays_steps_info" />
+        android:id="@+id/navigation_training"
+        android:name="com.example.myfitnesslogger.ui.fragments.TrainingFragment"
+        android:label="@string/Training"
+        tools:layout="@layout/weightkfa_fragment" />
 
     <fragment
-        android:id="@+id/navigation_activity"
-        android:name="com.CBPrograms.myfitnesslogger2023.ui.activity.ActivityFragment"
-        android:label="@string/title_activity"
-        tools:layout="@layout/fragment_activity" />
+        android:id="@+id/navigation_summary"
+        android:name="com.example.myfitnesslogger.ui.fragments.SummaryFragment"
+        android:label="@string/Summary"
+        tools:layout="@layout/summary_fragment" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.CBPrograms.myfitnesslogger2023.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_remarks"
+        android:name="com.example.myfitnesslogger.ui.fragments.InfosFragment"
+        android:label="@string/remarksButton"
+        tools:layout="@layout/summary_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.example.myfitnesslogger.ui.fragments.SettingsFragment"
+        android:label="@string/Settings"
+        tools:layout="@layout/settings_fragment" />
 
 </navigation>

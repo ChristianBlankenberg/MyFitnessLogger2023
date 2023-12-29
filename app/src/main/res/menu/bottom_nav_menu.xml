@@ -2,23 +2,37 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_weight_and_kfa"
-        android:icon="@drawable/ic_body_weight_scales_icon"
-        android:title="@string/title_weight_and_kfa" />
+        android:id="@+id/navigation_weightAndKFA"
+        android:icon="@drawable/ic_baseline_accessibility_new_24"
+        android:title="@string/weightAndKFA"/>
 
     <item
-        android:id="@+id/navigation_yesterdaysSteps"
-        android:icon="@drawable/ic_steps"
-        android:title="@string/yesterdaysSteps" />
+        android:id="@+id/navigation_training"
+        android:icon="@drawable/ic_dumbbell_gym_svgrepo_com"
+        android:title="@string/training" />
 
     <item
-        android:id="@+id/navigation_activity"
-        android:icon="@drawable/athletics_pictogram"
-        android:title= "@string/title_activity" />
+        android:id="@+id/navigation_summary"
+        android:icon="@drawable/ic_baseline_format_list_numbered_24"
+        android:title="@string/summary" />
 
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard" />
+        android:id="@+id/navigation_remarks"
+        android:icon="@drawable/ic_baseline_text_snippet_24"
+        android:title="@string/remarksButton" />
+<!--
+    <item
+        android:id="@+id/navigation_fasting"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/fasting" />
 
+    <item
+        android:id="@+id/navigation_steps"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/steps" />
+-->
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/settings" />
 </menu>
